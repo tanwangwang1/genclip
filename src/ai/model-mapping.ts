@@ -171,35 +171,75 @@ function buildSeedance20EvolinkBody(params: Record<string, any>): Record<string,
   return body;
 }
 
+/** Evolink 文档列出的 aspect_ratio 枚举（大小写不敏感输入 → 规范字符串） */
+const SEEDANCE_15_ASPECT_CANON: Record<string, string> = {
+  "16:9": "16:9",
+  "9:16": "9:16",
+  "1:1": "1:1",
+  "4:3": "4:3",
+  "3:4": "3:4",
+  "21:9": "21:9",
+  adaptive: "adaptive",
+};
+
+function seedance15AspectForApi(aspectRatio?: string): string {
+  const raw = (aspectRatio || "16:9").trim();
+  const key = raw.toLowerCase();
+  return SEEDANCE_15_ASPECT_CANON[key] ?? "16:9";
+}
+
+function seedance15QualityForApi(quality?: string): "480p" | "720p" | "1080p" {
+  const q = normalizeQuality(quality, "evolink", SEEDANCE_15_PRO_ID);
+  if (q === "480p" || q === "720p" || q === "1080p") return q;
+  return "720p";
+}
+
 /**
- * Evolink Seedance 1.5 Pro：单一 `model: seedance-1.5-pro`，按 image_urls 数量区分 t2v / i2v / 首尾帧。
+ * Evolink Seedance 1.5 Pro（`seedance-1.5-pro`）
+ * 文档：POST /v1/videos/generations；仅下列字段。
+ * 模式由 image_urls 数量决定：0=文生、1=图生、2=首尾帧 —— 须与前端 mode 对齐，避免图生误传 2 张变首尾帧。
  */
 function buildSeedance15EvolinkBody(params: Record<string, any>): Record<string, any> {
-  const imageUrls = Array.isArray(params.imageUrls)
-    ? params.imageUrls
+  const rawUrls = Array.isArray(params.imageUrls)
+    ? params.imageUrls.filter(Boolean)
     : params.imageUrl
       ? [params.imageUrl]
-      : undefined;
+      : [];
+  const mode = params.mode as string | undefined;
+
+  let image_urls: string[] | undefined;
+  if (rawUrls.length > 0) {
+    if (mode === "frames-to-video") {
+      image_urls = rawUrls.slice(0, 2);
+    } else if (mode === "image-to-video") {
+      image_urls = rawUrls.slice(0, 1);
+    } else if (mode === "text-to-video") {
+      image_urls = undefined;
+    } else {
+      image_urls = rawUrls.length >= 2 ? rawUrls.slice(0, 2) : rawUrls.slice(0, 1);
+    }
+  }
+
   const rawDuration =
     typeof params.duration === "number" && Number.isFinite(params.duration)
       ? params.duration
       : 5;
   const duration = Math.min(12, Math.max(4, Math.round(rawDuration)));
-  let quality = normalizeQuality(params.quality, "evolink", SEEDANCE_15_PRO_ID);
-  if (quality !== "480p" && quality !== "720p" && quality !== "1080p") {
-    quality = "720p";
-  }
+  const quality = seedance15QualityForApi(params.quality);
+
   const body: Record<string, any> = {
     prompt: String(params.prompt || "").slice(0, 2000),
     duration,
     quality,
-    aspect_ratio: params.aspectRatio || "16:9",
-    generate_audio: params.generateAudio ?? true,
+    aspect_ratio: seedance15AspectForApi(params.aspectRatio),
+    generate_audio: params.generateAudio !== false,
     callback_url: params.callbackUrl,
   };
-  if (imageUrls?.length) {
-    body.image_urls = imageUrls.slice(0, 2);
+
+  if (image_urls?.length) {
+    body.image_urls = image_urls;
   }
+
   return body;
 }
 
