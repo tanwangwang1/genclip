@@ -28,7 +28,7 @@ export function useNotificationDeduplication() {
       return;
     }
 
-    const channel = new BroadcastChannel("videofly-notifications");
+    const channel = new BroadcastChannel("genclip-notifications");
     channelRef.current = channel;
 
     // 监听其他标签页的消息

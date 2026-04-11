@@ -14,9 +14,14 @@ const generateSchema = z.object({
   quality: z.string().optional(),
   imageUrl: z.string().url().optional(),
   imageUrls: z.array(z.string().url()).optional(),
+  videoUrls: z.array(z.string().url()).optional(),
   mode: z.string().optional(),
   outputNumber: z.number().int().min(1).optional().default(1),
   generateAudio: z.boolean().optional(),
+  multiShots: z.boolean().optional(),
+  promptExtend: z.boolean().optional(),
+  audioUrl: z.string().url().optional(),
+  negativePrompt: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -34,9 +39,14 @@ export async function POST(request: NextRequest) {
       quality: data.quality,
       imageUrl: data.imageUrl,
       imageUrls: data.imageUrls,
+      videoUrls: data.videoUrls,
       mode: data.mode,
       outputNumber: data.outputNumber,
       generateAudio: data.generateAudio,
+      multiShots: data.multiShots,
+      promptExtend: data.promptExtend,
+      audioUrl: data.audioUrl,
+      negativePrompt: data.negativePrompt,
     });
 
     return apiSuccess(result);

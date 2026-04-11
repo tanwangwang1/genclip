@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Settings, FileText, ExternalLink } from "@/components/ui/icons";
+import { Settings } from "@/components/ui/icons";
 
 export default function AdminSettingsPage() {
   return (
@@ -37,13 +36,12 @@ export default function AdminSettingsPage() {
                 <span className="text-green-600">✓ 支持</span>
               </div>
             </div>
-            <Button asChild className="w-full">
-              <a href="https://docs.videofly.app" target="_blank" rel="noopener noreferrer">
-                <FileText className="h-4 w-4 mr-2" />
-                查看配置文档
-                <ExternalLink className="h-4 w-4 ml-2" />
-              </a>
-            </Button>
+            <p className="text-xs text-muted-foreground">
+              详细说明见仓库内{" "}
+              <code className="rounded bg-muted px-1.5 py-0.5 text-[11px]">
+                docs/CONFIGURATION_GUIDE.md
+              </code>
+            </p>
           </CardContent>
         </Card>
 
@@ -71,13 +69,12 @@ export default function AdminSettingsPage() {
                 <span className="text-green-600">✓ 支持</span>
               </div>
             </div>
-            <Button asChild variant="outline" className="w-full">
-              <a href="https://docs.videofly.app" target="_blank" rel="noopener noreferrer">
-                <FileText className="h-4 w-4 mr-2" />
-                查看快速开始
-                <ExternalLink className="h-4 w-4 ml-2" />
-              </a>
-            </Button>
+            <p className="text-xs text-muted-foreground">
+              环境变量与快速开始见{" "}
+              <code className="rounded bg-muted px-1.5 py-0.5 text-[11px]">
+                docs/README.md
+              </code>
+            </p>
           </CardContent>
         </Card>
 

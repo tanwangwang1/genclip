@@ -45,8 +45,8 @@ export const DEFAULT_VIDEO_MODELS: VideoModel[] = [
   // Seedance Series (Primary - APImart)
   // ============================================================================
   {
-    id: "seedance-1.5-pro",
-    name: "Seedance 1.5 Pro",
+    id: "seedance-2.0-pro",
+    name: "Seedance 2.0 Pro",
     icon: "https://videocdn.pollo.ai/web-cdn/pollo/production/cm3po9yyf0003oh0c2iyt8ajy/image/1754894158793-1e7ef687-c3c1-4f44-8b06-d044a8121f66.svg",
     color: "#10b981",
     description: "Text/Image/Frames to video with audio",
@@ -54,6 +54,24 @@ export const DEFAULT_VIDEO_MODELS: VideoModel[] = [
     creditCost: 16, // 最小 4s 720p 有音频 = 16 积分 (4秒 × 4积分/秒)
     durations: ["4s", "5s", "6s", "7s", "8s", "9s", "10s", "11s", "12s"],
     aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9"],
+    resolutions: ["480P", "720P", "1080P"],
+    maxImages: 2,
+    imageConstraints: {
+      maxSizeMB: 10,
+      formats: ["jpg", "jpeg", "png", "webp"],
+    },
+    supportsAudio: true,
+  },
+  {
+    id: "seedance-1.5-pro",
+    name: "Seedance 1.5 Pro",
+    icon: "https://videocdn.pollo.ai/web-cdn/pollo/production/cm3po9yyf0003oh0c2iyt8ajy/image/1754894158793-1e7ef687-c3c1-4f44-8b06-d044a8121f66.svg",
+    color: "#db2777",
+    description: "Evolink Seedance 1.5 — text, image, or first/last frame (2 images)",
+    maxDuration: "12 sec",
+    creditCost: 16,
+    durations: ["4s", "5s", "6s", "7s", "8s", "9s", "10s", "11s", "12s"],
+    aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9", "adaptive"],
     resolutions: ["480P", "720P", "1080P"],
     maxImages: 2,
     imageConstraints: {
@@ -105,11 +123,11 @@ export const DEFAULT_VIDEO_MODELS: VideoModel[] = [
     name: "Sora 2",
     icon: "https://videocdn.pollo.ai/web-cdn/pollo/test/cm3pol28q0000ojuuyeo77e36/image/1759998830447-10c6484e-786d-4d05-a2c4-f0c929b1042b.svg",
     color: "#000000",
-    description: "OpenAI's advanced video generation model",
-    maxDuration: "15 sec",
+    description: "OpenAI Sora 2 preview on Evolink (strict moderation; no photoreal people in image input)",
+    maxDuration: "12 sec",
     creditCost: 2,
-    durations: ["10s", "15s"],
-    aspectRatios: ["16:9", "9:16"],
+    durations: ["4s", "8s", "12s"],
+    aspectRatios: ["16:9", "9:16", "1280x720", "720x1280"],
     maxImages: 1,
   },
   {
@@ -118,9 +136,9 @@ export const DEFAULT_VIDEO_MODELS: VideoModel[] = [
     icon: "https://videocdn.pollo.ai/model-icon/svg/Group.svg",
     color: "#ff6a00",
     description: "Text/Image/Reference video to video with audio support",
-    maxDuration: "10 sec",
+    maxDuration: "15 sec",
     creditCost: 25,
-    durations: ["5s", "10s"],
+    durations: ["5s", "10s", "15s"],
     aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4"],
     resolutions: ["720P", "1080P"],
     maxImages: 1,
@@ -134,9 +152,10 @@ export const DEFAULT_VIDEO_MODELS: VideoModel[] = [
     description: "Google's video generation with reference support",
     maxDuration: "8 sec",
     creditCost: 10,
-    durations: ["8s"],
-    aspectRatios: ["16:9", "9:16"],
-    maxImages: 2,
+    durations: ["4s", "6s", "8s"],
+    aspectRatios: ["16:9", "9:16", "adaptive"],
+    resolutions: ["720P", "1080P", "4K"],
+    maxImages: 3,
     outputNumbers: [
       { value: 1 },
       { value: 2, isPro: true },
@@ -166,6 +185,7 @@ export const DEFAULT_VIDEO_MODES: GeneratorMode[] = [
     // Supports T2V and I2V (upload image for I2V mode)
     // Sora, Wan, Veo, Seedance
     supportedModels: [
+      "seedance-2.0-pro",
       "seedance-1.5-pro",
       "seedance-1.0-pro-fast",
       "seedance-1.0-pro-quality",
@@ -180,8 +200,7 @@ export const DEFAULT_VIDEO_MODES: GeneratorMode[] = [
     icon: "frames",
     uploadType: "start-end",
     description: "Generate video from start and end frame images",
-    // Seedance first-last-frame mode
-    supportedModels: ["seedance-1.5-pro"],
+    supportedModels: ["seedance-2.0-pro", "seedance-1.5-pro", "veo-3.1"],
     aspectRatios: ["16:9", "9:16"],
   },
   {
@@ -190,8 +209,7 @@ export const DEFAULT_VIDEO_MODES: GeneratorMode[] = [
     icon: "reference",
     uploadType: "characters",
     description: "Generate video using character reference images or videos",
-    // Seedance reference mode
-    supportedModels: ["seedance-1.5-pro"],
+    supportedModels: ["seedance-2.0-pro", "wan2.6", "veo-3.1"],
     // REFERENCE mode only supports 16:9 (Veo), Wan has more options but switches dynamically
     aspectRatios: ["16:9"],
     // REFERENCE mode fixed 8s (Veo)
@@ -233,10 +251,10 @@ export const DEFAULT_IMAGE_ASPECT_RATIOS = ["1:1", "16:9", "3:2", "2:3", "3:4", 
 // ============================================================================
 
 // Different models support different durations - common options listed here
-// sora-2: 10s, 15s
+// sora-2: 4s / 8s / 12s（Evolink sora-2-preview）
 // wan2.6: 5s, 10s
-// veo-3.1: 8s
-// seedance-1.5-pro: 4s-12s
+// veo-3.1: 4s / 6s / 8s（Evolink veo-3.1-fast-generate-preview）
+// seedance-2.0-pro: 4s-15s (Evolink)
 export const DEFAULT_DURATIONS = ["4s", "5s", "6s", "8s", "10s", "12s", "15s"];
 export const DEFAULT_RESOLUTIONS: string[] = [];
 
@@ -327,7 +345,7 @@ export const DEFAULT_CONFIG: GeneratorConfig = {
  */
 export const DEFAULT_DEFAULTS: GeneratorDefaults = {
   generationType: "video",
-  videoModel: "seedance-1.5-pro",
+  videoModel: "seedance-2.0-pro",
   imageModel: "flux-pro",
   videoMode: "text-image-to-video",
   imageMode: "text-to-image",

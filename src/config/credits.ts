@@ -158,17 +158,19 @@ export const CREDITS_CONFIG = {
             id: "sora-2",
             name: "Sora 2",
             provider: "evolink" as const,
-            description: "models.sora2.description",
+            description:
+              "OpenAI Sora 2 (Evolink). 4/8/12s. Image-to-video: one image, strict moderation.",
             supportImageToVideo: true,
-            maxDuration: 15,
-            durations: [10, 15],
-            aspectRatios: ["16:9", "9:16"],
+            maxDuration: 12,
+            durations: [4, 8, 12],
+            aspectRatios: ["16:9", "9:16", "1280x720", "720x1280"],
           },
           "wan2.6": {
             id: "wan2.6",
             name: "Wan 2.6",
             provider: "evolink" as const,
-            description: "models.wan26.description",
+            description:
+              "Wan 2.6 on Evolink — text or image-to-video, optional audio, 720p/1080p.",
             supportImageToVideo: true,
             maxDuration: 15,
             durations: [5, 10, 15],
@@ -179,28 +181,59 @@ export const CREDITS_CONFIG = {
             id: "veo-3.1",
             name: "Veo 3.1",
             provider: "evolink" as const,
-            description: "models.veo31.description",
+            description:
+              "Google Veo 3.1 Fast on Evolink. 4/6/8s, text or image, optional multi-output.",
             supportImageToVideo: true,
             maxDuration: 8,
-            durations: [8],
-            aspectRatios: ["16:9", "9:16"],
+            durations: [4, 6, 8],
+            aspectRatios: ["16:9", "9:16", "adaptive"],
+            qualities: ["720P", "1080P", "4K"],
           },
           "seedance-1.5-pro": {
             id: "seedance-1.5-pro",
             name: "Seedance 1.5 Pro",
-            provider: "apimart" as const,
-            description: "models.seedance.description",
+            provider: "evolink" as const,
+            description:
+              "Seedance 1.5 Pro on Evolink — text, image, or first/last frame (up to 2 images).",
             supportImageToVideo: true,
             maxDuration: 12,
-            durations: [4, 5, 6, 8, 10, 12],
-            aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9"],
+            durations: [4, 5, 6, 7, 8, 9, 10, 11, 12],
+            aspectRatios: [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4",
+              "21:9",
+              "adaptive",
+            ],
             qualities: ["480P", "720P", "1080P"],
+          },
+          "seedance-2.0-pro": {
+            id: "seedance-2.0-pro",
+            name: "Seedance 2.0 Pro",
+            provider: "apimart" as const,
+            description:
+              "Seedance 2.0 on Evolink (default APImart billing path) — text, image, reference, frames.",
+            supportImageToVideo: true,
+            maxDuration: 15,
+            durations: [4, 5, 6, 8, 10, 12, 13, 14, 15],
+            aspectRatios: [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4",
+              "21:9",
+              "adaptive",
+            ],
+            qualities: ["480P", "720P"],
           },
           "seedance-1.0-pro-fast": {
             id: "seedance-1.0-pro-fast",
             name: "Seedance 1.0 Pro Fast",
             provider: "apimart" as const,
-            description: "models.seedance10fast.description",
+            description: "Seedance 1.0 Pro Fast via APImart — quick generations, lower cost.",
             supportImageToVideo: true,
             maxDuration: 12,
             durations: [2, 4, 5, 6, 8, 10, 12],
@@ -211,7 +244,7 @@ export const CREDITS_CONFIG = {
             id: "seedance-1.0-pro-quality",
             name: "Seedance 1.0 Pro Quality",
             provider: "apimart" as const,
-            description: "models.seedance10quality.description",
+            description: "Seedance 1.0 Pro Quality via APImart — higher fidelity output.",
             supportImageToVideo: true,
             maxDuration: 12,
             durations: [2, 4, 5, 6, 8, 10, 12],
@@ -334,19 +367,24 @@ export function calculateModelCredits(
     if (normalized.includes("1080")) return 1080;
     if (normalized.includes("720")) return 720;
     if (normalized.includes("480")) return 480;
+    if (normalized.includes("4k")) return 2160;
     if (normalized === "high") return 1080;
     return 720;
   };
   const resolution = parseQualityToResolution(params.quality);
-  const isHighQuality = resolution >= 1080 || params.quality?.toLowerCase() === "high";
+  const isHighQuality =
+    resolution >= 1080 || params.quality?.toLowerCase() === "high";
+  const is4K =
+    resolution >= 2160 || params.quality?.toLowerCase().includes("4k");
 
   let credits = 0;
 
   // 根据模型使用不同的计算逻辑
   switch (modelId) {
     case "sora-2": {
-      // Sora 2: 固定价格（10s=2积分, 15s=3积分）
-      credits = params.duration === 15 ? 3 : 2;
+      const d = params.duration ?? 4;
+      const snapped = d <= 6 ? 4 : d <= 10 ? 8 : 12;
+      credits = snapped <= 4 ? 2 : snapped <= 8 ? 3 : 4;
       break;
     }
 
@@ -360,16 +398,24 @@ export function calculateModelCredits(
     }
 
     case "veo-3.1": {
-      // Veo 3.1: 固定 10 积分
-      credits = 10;
+      const raw = params.duration ?? 4;
+      const snapped =
+        raw <= 5 ? 4 : raw <= 7 ? 6 : 8;
+      credits = Math.ceil(10 * (snapped / 4));
+      if (isHighQuality && !is4K) {
+        credits = Math.ceil(credits * 1.15);
+      }
+      if (is4K) {
+        credits = Math.ceil(credits * 1.35);
+      }
       break;
     }
 
-    case "seedance-1.5-pro": {
-      // Seedance: 按秒计费，720p 有音频 = 4积分/秒
-      let perSecond = 4; // 720p 有音频
+    case "seedance-1.5-pro":
+    case "seedance-2.0-pro": {
+      let perSecond = resolution <= 480 ? 2 : 4;
       if (isHighQuality) {
-        perSecond = 8; // 1080p 有音频
+        perSecond = resolution <= 480 ? 4 : 8;
       }
       credits = params.duration * perSecond;
       break;

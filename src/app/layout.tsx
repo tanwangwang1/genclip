@@ -42,12 +42,20 @@ export const metadata = {
   },
   description: siteConfig.description,
   keywords: [
+    "Genclip",
+    "genclip.studio",
     "AI video generator",
     "text to video",
     "image to video",
+    "Sora 2",
+    "Veo 3.1",
+    "Wan 2.6",
+    "AI short video",
+    "video generation SaaS",
     "AI video",
     "video generation",
     "AI tools",
+    "Seedance",
   ],
   authors: [
     {

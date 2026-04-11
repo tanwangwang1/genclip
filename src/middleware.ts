@@ -15,6 +15,11 @@ const legacyRedirects: Record<string, string> = {
   "/dashboard/settings": "/settings",
 };
 
+/** 营销页路径更名（书签/外链兼容） */
+const legacyMarketingRedirects: Record<string, string> = {
+  "/seedance-1-5": "/seedance-2-0",
+};
+
 /**
  * Next-intl middleware with legacy dashboard redirects
  *
@@ -48,6 +53,25 @@ export default function middleware(request: NextRequest) {
     for (const [from, to] of Object.entries(legacyRedirects)) {
       const localeFrom = `/${locale}${from}`;
       if (pathname === localeFrom || pathname.startsWith(localeFrom + "/")) {
+        const rest = pathname.slice(localeFrom.length);
+        const url = request.nextUrl.clone();
+        url.pathname = `/${locale}${to}${rest}`;
+        return NextResponse.redirect(url);
+      }
+    }
+  }
+
+  for (const [from, to] of Object.entries(legacyMarketingRedirects)) {
+    if (pathname === from || pathname.startsWith(`${from}/`)) {
+      const url = request.nextUrl.clone();
+      url.pathname = to + pathname.slice(from.length);
+      return NextResponse.redirect(url);
+    }
+  }
+  for (const locale of routing.locales) {
+    for (const [from, to] of Object.entries(legacyMarketingRedirects)) {
+      const localeFrom = `/${locale}${from}`;
+      if (pathname === localeFrom || pathname.startsWith(`${localeFrom}/`)) {
         const rest = pathname.slice(localeFrom.length);
         const url = request.nextUrl.clone();
         url.pathname = `/${locale}${to}${rest}`;

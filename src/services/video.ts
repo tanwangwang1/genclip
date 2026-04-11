@@ -24,9 +24,14 @@ export interface GenerateVideoParams {
   quality?: string; // "standard" | "high"
   imageUrl?: string; // image-to-video
   imageUrls?: string[]; // image-to-video (multi-image)
+  videoUrls?: string[];
   mode?: string;
   outputNumber?: number;
   generateAudio?: boolean;
+  multiShots?: boolean;
+  promptExtend?: boolean;
+  audioUrl?: string;
+  negativePrompt?: string;
 }
 
 export interface VideoGenerationResult {
@@ -92,7 +97,9 @@ export class VideoService {
     }) * outputNumber;
 
     const hasImageInput =
-      (params.imageUrls && params.imageUrls.length > 0) || Boolean(params.imageUrl);
+      (params.imageUrls && params.imageUrls.length > 0) ||
+      Boolean(params.imageUrl) ||
+      Boolean(params.videoUrls && params.videoUrls.length > 0);
     const resolvedMode = normalizeGenerationMode(params.mode, hasImageInput);
 
     if (
@@ -167,7 +174,12 @@ export class VideoService {
           mode: resolvedMode,
           imageUrl: params.imageUrl,
           imageUrls: params.imageUrls,
+          videoUrls: params.videoUrls,
           generateAudio: params.generateAudio,
+          multiShots: params.multiShots,
+          promptExtend: params.promptExtend,
+          audioUrl: params.audioUrl,
+          negativePrompt: params.negativePrompt,
         },
         status: VideoStatus.PENDING,
         startImageUrl: params.imageUrls?.[0] || params.imageUrl || null,
@@ -243,9 +255,14 @@ export class VideoService {
         quality: params.quality,
         imageUrl: params.imageUrl,
         imageUrls: params.imageUrls,
+        videoUrls: params.videoUrls,
         mode: resolvedMode,
         outputNumber,
         generateAudio: params.generateAudio,
+        multiShots: params.multiShots,
+        promptExtend: params.promptExtend,
+        audioUrl: params.audioUrl,
+        negativePrompt: params.negativePrompt,
         callbackUrl,
       });
 

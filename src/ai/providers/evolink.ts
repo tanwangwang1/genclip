@@ -8,6 +8,7 @@ import {
   transformParamsForProvider,
 } from "../model-mapping";
 
+/** Evolink：`POST /v1/videos/generations`；`model` 与请求体见 `src/ai/model-mapping.ts`。 */
 export class EvolinkProvider implements AIVideoProvider {
   name = "evolink";
   supportImageToVideo = true; // evolink supports image-to-video

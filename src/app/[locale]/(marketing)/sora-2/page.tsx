@@ -10,7 +10,7 @@ interface ModelPageProps {
 const modelInfo: Record<string, { name: string; provider: string; description: string }> = {
   "sora-2": { name: "Sora 2", provider: "OpenAI", description: "Create stunning videos from text prompts with Sora 2" },
   "veo-3-1": { name: "Veo 3.1", provider: "Google", description: "High-quality video generation by Google DeepMind" },
-  "seedance-1-5": { name: "Seedance 1.5", provider: "ByteDance", description: "Professional AI video generation" },
+  "seedance-2-0": { name: "Seedance 2.0", provider: "ByteDance", description: "Professional AI video generation" },
   "wan-2-6": { name: "Wan 2.6", provider: "Alibaba", description: "Advanced video generation model" },
 };
 const pathSegment = "sora-2";
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: ModelPageProps) {
   const info = modelInfo[pathSegment];
 
   return {
-    title: `${info?.name || "Model"} - VideoFly`,
+    title: `${info?.name || "Model"} - Genclip`,
     description: info?.description || "AI Video Generation Platform",
     alternates: {
       canonical: alternates.canonical,

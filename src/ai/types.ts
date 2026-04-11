@@ -11,11 +11,21 @@ export interface VideoGenerationParams {
   quality?: string;
   imageUrl?: string;
   imageUrls?: string[];
+  /** Wan 2.6 reference-video：参考视频 URL（mp4/mov），优先于占位用的 imageUrls */
+  videoUrls?: string[];
   mode?: string;
   outputNumber?: number;
   generateAudio?: boolean;
   removeWatermark?: boolean;
   callbackUrl?: string;
+  /** KIE / Evolink Wan：多镜头 */
+  multiShots?: boolean;
+  /** Evolink Wan：是否开启 prompt 智能改写，默认 true */
+  promptExtend?: boolean;
+  /** Evolink Wan：配乐音频 mp3 URL */
+  audioUrl?: string;
+  /** Evolink Veo 等：负面提示词 */
+  negativePrompt?: string;
 }
 
 // Unified task response

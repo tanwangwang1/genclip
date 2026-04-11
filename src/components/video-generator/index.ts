@@ -1,5 +1,5 @@
 /**
- * @videofly/video-generator
+ * @genclip/video-generator
  *
  * A fully configurable AI video/image generation input component.
  *

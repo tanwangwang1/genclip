@@ -1,11 +1,11 @@
 {
-  "name": "VideoFly",
-  "short_name": "VideoFly",
+  "name": "Genclip",
+  "short_name": "Genclip",
   "description": "AI-powered video generation platform",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0f0d",
-  "theme_color": "#1a7a42",
+  "background_color": "#0f0a12",
+  "theme_color": "#ec4899",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -16,6 +16,11 @@
       "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
     }
   ]
 }

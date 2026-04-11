@@ -26,15 +26,15 @@ export const referenceToVideoConfig: ToolPageConfig = {
     uiMode: "compact",
 
     defaults: {
-      model: "seedance-1.5-pro",
+      model: "seedance-2.0-pro",
       duration: 5,
       aspectRatio: "16:9",
       outputNumber: 1,
     },
 
     models: {
-      available: ["seedance-1.5-pro"],
-      default: "seedance-1.5-pro",
+      available: ["seedance-2.0-pro"],
+      default: "seedance-2.0-pro",
     },
 
     features: {
@@ -92,7 +92,7 @@ export const referenceToVideoConfig: ToolPageConfig = {
     ],
 
     supportedModels: [
-      { name: "Seedance 1.5 Pro", provider: "ByteDance", color: "#10b981" },
+      { name: "Seedance 2.0 Pro", provider: "ByteDance", color: "#10b981" },
     ],
 
     stats: {

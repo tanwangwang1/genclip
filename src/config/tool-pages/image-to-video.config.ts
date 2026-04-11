@@ -16,7 +16,7 @@ export const imageToVideoConfig: ToolPageConfig = {
       "picture to video",
       "image animation",
       "seedance",
-      "seedance 1.5",
+      "seedance 2.0",
     ],
     ogImage: "/og-image-to-video.jpg",
   },
@@ -27,15 +27,23 @@ export const imageToVideoConfig: ToolPageConfig = {
     uiMode: "compact",
 
     defaults: {
-      model: "seedance-1.5-pro",
+      model: "seedance-2.0-pro",
       duration: 5,
       aspectRatio: "16:9",
       outputNumber: 1,
     },
 
     models: {
-      available: ["seedance-1.5-pro", "seedance-1.0-pro-fast", "seedance-1.0-pro-quality"],
-      default: "seedance-1.5-pro",
+      available: [
+        "seedance-2.0-pro",
+        "seedance-1.5-pro",
+        "sora-2",
+        "wan2.6",
+        "veo-3.1",
+        "seedance-1.0-pro-fast",
+        "seedance-1.0-pro-quality",
+      ],
+      default: "seedance-2.0-pro",
     },
 
     features: {
@@ -53,8 +61,8 @@ export const imageToVideoConfig: ToolPageConfig = {
       showOutputNumber: false,
       showAudioGeneration: false,
 
-      durations: [2, 4, 5, 6, 8, 10, 12],
-      aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9"],
+      durations: [2, 4, 5, 6, 8, 10, 12, 13, 14, 15],
+      aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9", "adaptive"],
     },
   },
 
@@ -88,13 +96,17 @@ export const imageToVideoConfig: ToolPageConfig = {
     features: [
       "Upload any photo (JPG, PNG, WEBP up to 10MB)",
       "Multiple AI models for different animation styles",
-      "Full HD output up to 1080p resolution",
+      "Seedance 2.0: 480p/720p; Seedance 1.0: up to 1080p",
       "Fast generation in 2-5 minutes",
       "Commercial use rights included",
     ],
 
     supportedModels: [
-      { name: "Seedance 1.5 Pro", provider: "ByteDance", color: "#10b981" },
+      { name: "Seedance 2.0 Pro", provider: "ByteDance", color: "#10b981" },
+      { name: "Seedance 1.5 Pro", provider: "ByteDance", color: "#db2777" },
+      { name: "Sora 2", provider: "OpenAI", color: "#000000" },
+      { name: "Wan 2.6", provider: "Alibaba", color: "#8b5cf6" },
+      { name: "Veo 3.1", provider: "Google", color: "#4285f4" },
       { name: "Seedance 1.0 Fast", provider: "ByteDance", color: "#34d399" },
       { name: "Seedance 1.0 Quality", provider: "ByteDance", color: "#059669" },
     ],

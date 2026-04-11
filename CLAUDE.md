@@ -1,8 +1,8 @@
-# VideoFly - AI Video Generation Platform
+# Genclip - AI Video Generation Platform
 
 ## Project Overview
 
-VideoFly is a SaaS platform for AI-powered video generation. It's built as a standalone Next.js application with AI video generation capabilities.
+Genclip is a SaaS platform for AI-powered video generation. It's built as a standalone Next.js application with AI video generation capabilities.
 
 ## Tech Stack
 
@@ -17,7 +17,7 @@ VideoFly is a SaaS platform for AI-powered video generation. It's built as a sta
 ## Project Structure
 
 ```
-videofly/
+genclip/
 ├── src/
 │   ├── app/                  # Next.js App Router pages
 │   │   ├── api/              # API Routes
@@ -65,10 +65,11 @@ Unified abstraction for multiple AI video generation providers.
 
 **Supported Providers:**
 - **evolink** - Primary provider
-  - Sora 2 (image-to-video, 10-15s, 16:9/9:16)
+  - Sora 2 (`sora-2-preview`, 4/8/12s, 16:9/9:16 或 1280x720/720x1280；图生 1 张)
   - Wan 2.6 (image-to-video, 5-15s, multiple ratios)
-  - Veo 3.1 (short clips, 4-8s)
-  - Seedance 1.5 Pro (multiple qualities 480P-1080P)
+  - Veo 3.1 (`veo-3.1-fast-generate-preview`, 4/6/8s)
+  - Seedance 1.5 Pro (`seedance-1.5-pro`, 480p/720p/1080p, 4–12s, 首尾帧最多 2 图)
+  - Seedance 2.0 Pro (`seedance-2.0-*`, 480p/720p, 4–15s)
 - **kie** - Secondary provider
 
 **Key Files:**

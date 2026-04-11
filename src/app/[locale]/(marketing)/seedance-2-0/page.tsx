@@ -7,7 +7,7 @@ interface ModelPageProps {
   }>;
 }
 
-const pathSegment = "seedance-1-5";
+const pathSegment = "seedance-2-0";
 
 export async function generateMetadata({
   params,
@@ -16,8 +16,8 @@ export async function generateMetadata({
   const alternates = buildAlternates(`/${pathSegment}`, locale);
 
   return {
-    title: "Seedance 1.5 - VideoFly",
-    description: "Professional AI video generation",
+    title: "Seedance 2.0 - Genclip",
+    description: "Professional AI video generation with Seedance 2.0 on EvoLink",
     alternates: {
       canonical: alternates.canonical,
       languages: alternates.languages,
@@ -32,7 +32,7 @@ export default async function ModelPage({ params }: ModelPageProps) {
     <div className="container mx-auto px-4 py-20">
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
-          Seedance 1.5
+          Seedance 2.0
         </h1>
         <p className="text-xl text-muted-foreground mb-8">
           Coming soon...

@@ -38,8 +38,8 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/components/ui";
 import { useCredits } from "@/stores/credits-store";
-import { headerModels, headerTools, headerDocs } from "@/config/navigation";
-import { Gem, ImagePlay, Type, Video, BookOpen } from "lucide-react";
+import { headerModels, headerTools } from "@/config/navigation";
+import { Gem, ImagePlay, Type, Video } from "lucide-react";
 import { LocaleLink } from "@/i18n/navigation";
 import type { User } from "@/lib/auth/client";
 import { useSigninModal } from "@/hooks/use-signin-modal";
@@ -120,8 +120,8 @@ export function LandingHeader({ user }: { user?: User | null }) {
             href="/"
             className="flex items-center gap-2 text-xl font-semibold"
           >
-            <Image src="/logo.svg" alt="VideoFly" width={28} height={28} className="rounded-md" />
-            VideoFly
+            <Image src="/logo.svg" alt="Genclip" width={28} height={28} className="rounded-md" />
+            Genclip
           </LocaleLink>
 
           {/* Center Menu - NavigationMenu for better hover */}
@@ -327,8 +327,8 @@ export function LandingHeader({ user }: { user?: User | null }) {
             href="/"
             className="flex items-center gap-2 text-lg font-semibold"
           >
-            <Image src="/logo.svg" alt="VideoFly" width={28} height={28} className="rounded-md" />
-            VideoFly
+            <Image src="/logo.svg" alt="Genclip" width={28} height={28} className="rounded-md" />
+            Genclip
           </LocaleLink>
 
           {/* Mobile Menu */}
@@ -357,8 +357,8 @@ export function LandingHeader({ user }: { user?: User | null }) {
                       href="/"
                       className="flex items-center gap-2"
                     >
-                      <Image src="/logo.svg" alt="VideoFly" width={28} height={28} className="rounded-md" />
-            VideoFly
+                      <Image src="/logo.svg" alt="Genclip" width={28} height={28} className="rounded-md" />
+            Genclip
                     </LocaleLink>
                   </SheetTitle>
                 </SheetHeader>

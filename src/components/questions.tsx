@@ -9,7 +9,7 @@ export function Questions() {
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
-        <AccordionTrigger>About Saasfly</AccordionTrigger>
+        <AccordionTrigger>About Genclip</AccordionTrigger>
         <AccordionContent>
           Nextify Limited’s team of experienced developers has invested years
           into refining our software development methodologies. We’re proud to

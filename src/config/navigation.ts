@@ -90,9 +90,9 @@ export const headerModels = [
   { id: "veo", title: "Veo 3.1", subtitle: "by Google", href: "/veo-3-1" },
   {
     id: "seedance",
-    title: "Seedance 1.5",
+    title: "Seedance 2.0",
     subtitle: "by ByteDance",
-    href: "/seedance-1-5",
+    href: "/seedance-2-0",
   },
   { id: "wan", title: "Wan 2.6", subtitle: "by Alibaba", href: "/wan-2-6" },
 ];
@@ -118,14 +118,6 @@ export const headerTools = [
     icon: "Video",
   },
 ];
-
-// 落地页顶部导航 - 文档链接
-export const headerDocs = {
-  id: "docs",
-  title: "Docs",
-  href: "https://docs.videofly.app",
-  external: true,
-};
 
 // 用户菜单项 (HeaderSimple 组件使用)
 export const userMenuItems = [

@@ -49,27 +49,14 @@ export function isHighQuality(resolution?: string, quality?: string): boolean {
 // ============================================================================
 
 /**
- * Sora 2 Lite 积分计算（基于 Evolink 1:1 成本）
- * 有水印: 10s = 1.6 Credits, 15s = 2.6 Credits
- * 无水印: 10s = 2.6 Credits, 15s = 3.6 Credits
- *
- * 计算公式: 向上取整(基础价)
+ * Sora 2（Evolink `sora-2-preview`：时长仅 4 / 8 / 12 秒）
+ * 与 `credits.ts` / `calculateModelCredits` 档位对齐：4s≈2、8s≈3、12s≈4 积分
  */
 function calculateSora2Credits(params: CreditCalculationParams): number {
-  const duration = parseDuration(params.duration);
-  const removeWatermark = true; // 默认无水印 (remove_watermark=true)
-
-  // Evolink 成本
-  let credits = 0;
-  if (duration === 15) {
-    credits = removeWatermark ? 3.6 : 2.6;
-  } else {
-    // 默认 10s
-    credits = removeWatermark ? 2.6 : 1.6;
-  }
-
-  // 向上取整
-  return Math.ceil(credits) * params.outputNumber;
+  const duration = parseDuration(params.duration) || 4;
+  const snapped = duration <= 6 ? 4 : duration <= 10 ? 8 : 12;
+  const credits = snapped <= 4 ? 2 : snapped <= 8 ? 3 : 4;
+  return credits * params.outputNumber;
 }
 
 /**
@@ -113,7 +100,7 @@ function calculateVeo31Credits(params: CreditCalculationParams): number {
 }
 
 /**
- * Seedance 1.5 Pro 积分计算（基于 Evolink 1:1 成本，按秒计费）
+ * Seedance 2.0 Pro 积分计算（按秒计费；与 credits.ts 定价一致）
  * 默认有音频 (generateAudio = true)
  *
  * Evolink 成本（Credits/秒）:
@@ -181,6 +168,7 @@ export function calculateVideoCredits(params: CreditCalculationParams): number {
     case "veo-3.1":
       return calculateVeo31Credits(params);
 
+    case "seedance-2.0-pro":
     case "seedance-1.5-pro":
       return calculateSeedanceCredits(params);
 
@@ -258,7 +246,7 @@ export function getCreditRangeText(model: VideoModel): string {
   if (model.id === "sora-2") {
     maxCredits = calculateVideoCredits({
       model,
-      duration: "15s",
+      duration: "12s",
       outputNumber: 1,
     });
   } else if (model.id === "wan2.6") {
@@ -270,7 +258,10 @@ export function getCreditRangeText(model: VideoModel): string {
     });
   } else if (model.id === "veo-3.1") {
     maxCredits = 60; // 固定价格
-  } else if (model.id === "seedance-1.5-pro") {
+  } else if (
+    model.id === "seedance-2.0-pro" ||
+    model.id === "seedance-1.5-pro"
+  ) {
     maxCredits = calculateVideoCredits({
       model,
       duration: "12s",
