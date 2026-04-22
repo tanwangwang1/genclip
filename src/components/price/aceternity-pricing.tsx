@@ -87,22 +87,67 @@ export function AceternityPricing({
           plan: product.id,
         },
       });
+      const dataObj = (data ?? null) as Record<string, unknown> | null;
+      const directUrlCandidates = [
+        dataObj?.url,
+        dataObj?.checkoutUrl,
+        dataObj?.checkout_url,
+        dataObj?.hostedCheckoutUrl,
+        dataObj?.hosted_checkout_url,
+        dataObj?.paymentUrl,
+        dataObj?.payment_url,
+      ];
+      const nestedData = (dataObj?.data ?? null) as Record<string, unknown> | null;
+      const nestedErrorMessage =
+        (typeof dataObj?.error === "string" ? dataObj.error : null) ??
+        (typeof nestedData?.error === "string" ? nestedData.error : null) ??
+        (typeof dataObj?.message === "string" ? dataObj.message : null) ??
+        (typeof nestedData?.message === "string" ? nestedData.message : null);
+      const checkoutUrl =
+        (directUrlCandidates.find((v) => typeof v === "string") as string | undefined) ??
+        (nestedData?.url as string | undefined) ??
+        (nestedData?.checkoutUrl as string | undefined) ??
+        (nestedData?.checkout_url as string | undefined) ??
+        (nestedData?.hostedCheckoutUrl as string | undefined) ??
+        (nestedData?.hosted_checkout_url as string | undefined) ??
+        (nestedData?.paymentUrl as string | undefined) ??
+        (nestedData?.payment_url as string | undefined) ??
+        null;
+      console.log("[Creem Debug] createCheckout result", {
+        productId: product.id,
+        successUrl: `${origin}/credits?payment=success&returnTo=${returnTo}`,
+        data,
+        error,
+        checkoutUrl,
+        dataKeys: dataObj ? Object.keys(dataObj) : [],
+        nestedDataKeys: nestedData ? Object.keys(nestedData) : [],
+      });
+      if (dataObj) {
+        console.log("[Creem Debug] createCheckout data json", JSON.stringify(dataObj, null, 2));
+      }
 
       if (error) {
         toast.error("Checkout error", {
-          description: error.message ?? "Failed to create checkout session.",
+          description: error.message ?? nestedErrorMessage ?? "Failed to create checkout session.",
         });
         return;
       }
 
-      if (!data || !("url" in data) || !data.url) {
+      if (nestedErrorMessage) {
         toast.error("Checkout error", {
-          description: "Missing checkout URL from Creem.",
+          description: nestedErrorMessage,
         });
         return;
       }
 
-      window.location.href = data.url;
+      if (!checkoutUrl) {
+        toast.error("Checkout error", {
+          description: "Missing checkout URL from Creem. Please verify product and environment settings.",
+        });
+        return;
+      }
+
+      window.location.href = checkoutUrl;
     });
   };
 

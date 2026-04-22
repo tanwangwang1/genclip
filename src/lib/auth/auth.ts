@@ -19,6 +19,53 @@ import * as schema from "@/db/schema";
 import { env } from "./env.mjs";
 import { eq } from "drizzle-orm";
 
+const CREEM_FETCH_DEBUG = process.env.CREEM_FETCH_DEBUG === "1";
+
+if (
+  CREEM_FETCH_DEBUG &&
+  typeof globalThis.fetch === "function" &&
+  !(globalThis as typeof globalThis & { __creemFetchPatched?: boolean }).__creemFetchPatched
+) {
+  console.log("[Creem Debug] fetch patch enabled");
+  const originalFetch = globalThis.fetch.bind(globalThis);
+
+  globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+    const url =
+      typeof input === "string"
+        ? input
+        : input instanceof URL
+          ? input.toString()
+          : input.url;
+
+    const response = await originalFetch(input, init);
+
+    if (url.includes("api.creem.io/v1/checkouts")) {
+      let parsedBody: unknown = null;
+      try {
+        const rawBody = await response.clone().text();
+        parsedBody = rawBody ? JSON.parse(rawBody) : rawBody;
+      } catch (parseError) {
+        parsedBody = {
+          note: "Failed to parse Creem response body as JSON",
+          error: String(parseError),
+        };
+      }
+
+      console.log("Creem response status:", response.status);
+      console.log(
+        "Creem response body:",
+        JSON.stringify(parsedBody, null, 2)
+      );
+    }
+
+    return response;
+  };
+
+  (
+    globalThis as typeof globalThis & { __creemFetchPatched?: boolean }
+  ).__creemFetchPatched = true;
+}
+
 const toLogString = (value: unknown) => {
   if (value === null || value === undefined) return String(value);
   if (typeof value === "string") return value;

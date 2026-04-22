@@ -37,11 +37,6 @@ export const textToVideoConfig: ToolPageConfig = {
       available: [
         "seedance-2.0-pro",
         "seedance-1.5-pro",
-        "sora-2",
-        "wan2.6",
-        "veo-3.1",
-        "seedance-1.0-pro-fast",
-        "seedance-1.0-pro-quality",
       ],
       default: "seedance-2.0-pro",
     },
@@ -104,11 +99,6 @@ export const textToVideoConfig: ToolPageConfig = {
     supportedModels: [
       { name: "Seedance 2.0 Pro", provider: "ByteDance", color: "#10b981" },
       { name: "Seedance 1.5 Pro", provider: "ByteDance", color: "#db2777" },
-      { name: "Sora 2", provider: "OpenAI", color: "#000000" },
-      { name: "Wan 2.6", provider: "Alibaba", color: "#8b5cf6" },
-      { name: "Veo 3.1", provider: "Google", color: "#4285f4" },
-      { name: "Seedance 1.0 Fast", provider: "ByteDance", color: "#34d399" },
-      { name: "Seedance 1.0 Quality", provider: "ByteDance", color: "#059669" },
     ],
 
     stats: {

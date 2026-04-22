@@ -81,7 +81,7 @@ export const NEW_USER_GIFT = {
   /** 是否启用赠送 */
   enabled: true,
   /** 赠送积分数量 */
-  credits: 2,  // 1 个 Sora 2 视频
+  credits: 10,  // 1 个 Sora 2 视频
   /** 积分有效期（天）*/
   validDays: 30,
 };
@@ -120,30 +120,30 @@ export const CREDIT_EXPIRATION = {
 export const SUBSCRIPTION_PRODUCTS = [
   // ===== 月付订阅 =====
   {
-    id: "prod_jsRIeZmqn3L9NN2fiFIn6", // 从 Creem 后台复制 Basic Monthly Product ID
+    id: "prod_4rhj0XoGLI2sGifFkGTkbE", // 从 Creem 后台复制 Basic Monthly Product ID
     name: "Basic Plan",
     priceUsd: 9.9,
-    credits: 280, // ~28 Veo 3.1 视频 (60% 毛利率)
+    credits: 350, // ~35 Veo 3.1 视频
     period: "month" as const,
     popular: false,
     enabled: true,
     features: ["hd_videos", "fast_generation"],
   },
   {
-    id: "prod_3tlZPSRNHZSaNq21zX2Z16", // 从 Creem 后台复制 Pro Monthly Product ID
+    id: "prod_3IboIcnu8jL2NArsLqJu3x", // 从 Creem 后台复制 Pro Monthly Product ID
     name: "Pro Plan",
     priceUsd: 29.9,
-    credits: 960, // ~96 Veo 3.1 视频 (55% 毛利率，比 Basic 便宜 12%)
+    credits: 1420, // ~142 Veo 3.1 视频
     period: "month" as const,
     popular: true, // 推荐
     enabled: true,
     features: ["hd_videos", "fast_generation", "no_watermark", "commercial_use"],
   },
   {
-    id: "prod_3tlZPSRNHZSaNq22zX2Z18", // 从 Creem 后台复制 Ultimate Monthly Product ID
+    id: "prod_44ZB0m02FGp0F2A4EnFtyt", // 从 Creem 后台复制 Ultimate Monthly Product ID
     name: "Ultimate Plan",
     priceUsd: 79.9,
-    credits: 2850, // ~285 Veo 3.1 视频 (50% 毛利率，比 Basic 便宜 21%)
+    credits: 4000, // ~400 Veo 3.1 视频
     period: "month" as const,
     popular: false,
     enabled: true,
@@ -152,30 +152,30 @@ export const SUBSCRIPTION_PRODUCTS = [
 
   // ===== 年付订阅（月付 × 10，买 10 送 2） =====
   {
-    id: "prod_3tlZPSRNHZSaNq22zX2Z10", // 从 Creem 后台复制 Basic Yearly Product ID
+    id: "prod_17Zyel4YdWkkgBJQj8kNW5", // 从 Creem 后台复制 Basic Yearly Product ID
     name: "Basic Plan (Yearly)",
     priceUsd: 99, // 月付 × 10 (省 2 个月)
-    credits: 3360, // 280 × 12
+    credits: 4240, // 按 PRICING_REFERENCE 固定值
     period: "year" as const,
     popular: false,
     enabled: true,
     features: ["hd_videos", "fast_generation"],
   },
   {
-    id: "prod_3tlZPSRNHZSaNq22zX2Z55", // 从 Creem 后台复制 Pro Yearly Product ID
+    id: "prod_788yEBovxRQ00l4fc15Xkl", // 从 Creem 后台复制 Pro Yearly Product ID
     name: "Pro Plan (Yearly)",
     priceUsd: 299, // 月付 × 10 (省 2 个月)
-    credits: 11520, // 960 × 12
+    credits: 14950, // 按 PRICING_REFERENCE 固定值
     period: "year" as const,
     popular: true,
     enabled: true,
     features: ["hd_videos", "fast_generation", "no_watermark", "commercial_use"],
   },
   {
-    id: "prod_3tlZPSRNHZSaNq22zX2Z21", // 从 Creem 后台复制 Ultimate Yearly Product ID
+    id: "prod_1zXFiJ12e0HCdXSkaZvSca", // 从 Creem 后台复制 Ultimate Yearly Product ID
     name: "Ultimate Plan (Yearly)",
     priceUsd: 799, // 月付 × 10 (省 2 个月)
-    credits: 34200, // 2850 × 12
+    credits: 42950, // 按 PRICING_REFERENCE 固定值
     period: "year" as const,
     popular: false,
     enabled: true,
@@ -201,10 +201,10 @@ export const SUBSCRIPTION_PRODUCTS = [
  */
 export const CREDIT_PACKAGES: CreditPackageConfig[] = [
   {
-    id: "prod_3tlZPSRNHZSaNq21zX2ZPO", // 从 Creem 后台复制 Starter Pack Product ID
+    id: "prod_3rXuLL8JLBGd7tIxZc1lnI", // 从 Creem 后台复制 Starter Pack Product ID
     name: "Starter Pack",
     priceUsd: 14.9,
-    credits: 280, // 和 Basic 月付积分相同
+    credits: 350, // 和 Basic 月付积分相同
     popular: true, // 推荐
     enabled: true,
     allowFreeUser: true, // 所有用户可购买
@@ -213,18 +213,18 @@ export const CREDIT_PACKAGES: CreditPackageConfig[] = [
   {
     id: "prod_3tlZPSRNHZSaNq22zX2Z12", // 从 Creem 后台复制 Standard Pack Product ID
     name: "Standard Pack",
-    priceUsd: 39.9, // 比月付 Pro 贵 33%
-    credits: 960, // 和 Pro 月付积分相同
+    priceUsd: 49.9, // 按 PRICING_REFERENCE 固定值
+    credits: 1420, // 和 Pro 月付积分相同
     popular: false,
     enabled: true,
     allowFreeUser: false, // 仅订阅用户
     features: ["hd_videos", "fast_generation", "no_watermark"],
   },
   {
-    id: "prod_3tlZPSRNHZSaNq22zX2Z13", // 从 Creem 后台复制 Pro Pack Product ID
+    id: "prod_3coIycntCZDafLS9DdkzQf", // 从 Creem 后台复制 Pro Pack Product ID
     name: "Pro Pack",
-    priceUsd: 99.9, // 比月付 Ultimate 贵 25%
-    credits: 2850, // 和 Ultimate 月付积分相同
+    priceUsd: 119.9, // 按 PRICING_REFERENCE 固定值
+    credits: 4000, // 和 Ultimate 月付积分相同
     popular: false,
     enabled: true,
     allowFreeUser: false, // 仅订阅用户
@@ -256,16 +256,16 @@ export const CREDIT_PACKAGES: CreditPackageConfig[] = [
 export const VIDEO_MODEL_PRICING: Record<string, VideoModelPricing> = {
   /** Seedance 1.5 Pro（Evolink：seedance-1.5-pro）— 按秒计费 */
   "seedance-1.5-pro": {
-    baseCredits: 0,
-    perSecond: 4,
+    baseCredits: 7,
+    perSecond: 1.7,
     qualityMultiplier: 2,
     enabled: true,
   },
 
   /** Seedance 2.0 Pro（Evolink：seedance-2.0-*）— 按秒计费 */
   "seedance-2.0-pro": {
-    baseCredits: 0,
-    perSecond: 4,
+    baseCredits: 25,
+    perSecond: 6.25,
     qualityMultiplier: 2,
     enabled: true,
   },
@@ -275,7 +275,7 @@ export const VIDEO_MODEL_PRICING: Record<string, VideoModelPricing> = {
     baseCredits: 0,
     perSecond: 3, // 按秒计费
     qualityMultiplier: 2,
-    enabled: true,
+    enabled: false,
   },
 
   /** Seedance 1.0 Pro Quality - 高质量生成（APImart） */
@@ -283,21 +283,21 @@ export const VIDEO_MODEL_PRICING: Record<string, VideoModelPricing> = {
     baseCredits: 0,
     perSecond: 5, // 高质量，每秒积分更高
     qualityMultiplier: 2,
-    enabled: true,
+    enabled: false,
   },
 
   /** Veo 3.1 Fast（Evolink） */
   "veo-3.1": {
     baseCredits: 10,
     perSecond: 0,
-    enabled: true,
+    enabled: false,
   },
 
   /** Sora 2（Evolink sora-2-preview） */
   "sora-2": {
     baseCredits: 2,
     perSecond: 0,
-    enabled: true,
+    enabled: false,
   },
 
   /** Wan 2.6（Evolink） */
@@ -305,7 +305,7 @@ export const VIDEO_MODEL_PRICING: Record<string, VideoModelPricing> = {
     baseCredits: 25,
     perSecond: 5,
     qualityMultiplier: 1.67,
-    enabled: true,
+    enabled: false,
   },
 };
 

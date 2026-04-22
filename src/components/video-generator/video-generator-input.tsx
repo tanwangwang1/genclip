@@ -36,7 +36,6 @@ import { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import {
   ChevronDown,
   Plus,
-  Send,
   RefreshCw,
   Clock,
   Copy,
@@ -166,7 +165,7 @@ export function VideoGeneratorInput({
   );
 
   // Common state
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState(defaults.prompt ?? "");
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAdvancedSettingsOpen, setIsAdvancedSettingsOpen] = useState(false);
@@ -214,6 +213,7 @@ export function VideoGeneratorInput({
   const [visibleTemplates, setVisibleTemplates] = useState<PromptTemplate[]>(
     promptTemplates.slice(0, 5)
   );
+  const lastDefaultsPromptRef = useRef(defaults.prompt);
 
   // Auto-set generation type when only one type has models
   useEffect(() => {
@@ -223,6 +223,18 @@ export function VideoGeneratorInput({
       setGenerationType("image");
     }
   }, [videoModels.length, imageModels.length, generationType]);
+
+  // Sync externally provided prompt (e.g., landing demo linkage)
+  // Only sync when external defaults.prompt actually changes.
+  useEffect(() => {
+    if (typeof defaults.prompt !== "string") return;
+    if (defaults.prompt === lastDefaultsPromptRef.current) return;
+
+    lastDefaultsPromptRef.current = defaults.prompt;
+    setPrompt(defaults.prompt);
+    onPromptChange?.(defaults.prompt);
+    onChange?.({ prompt: defaults.prompt });
+  }, [defaults.prompt, onPromptChange, onChange]);
 
   // Reset duration when model changes if current duration is not supported
   useEffect(() => {
@@ -1383,16 +1395,19 @@ export function VideoGeneratorInput({
                 onClick={handleSubmit}
                 disabled={!canSubmit}
                 className={cn(
-                  "w-10 h-10 rounded-full flex items-center justify-center transition-all",
+                  "h-10 px-4 rounded-lg flex items-center justify-center gap-2 text-sm font-semibold transition-all",
                   canSubmit
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                    ? "bg-[linear-gradient(135deg,#3B82F6_0%,#8B5CF6_100%)] text-primary-foreground shadow-[0_8px_24px_rgba(59,130,246,0.28)] hover:brightness-110 hover:shadow-[0_10px_30px_rgba(139,92,246,0.34)]"
                     : "bg-secondary text-muted-foreground/60 cursor-not-allowed"
                 )}
               >
                 {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Generating...</span>
+                  </>
                 ) : (
-                  <Send className="w-4 h-4" />
+                  <span>Generate</span>
                 )}
               </button>
             </div>
@@ -1403,6 +1418,9 @@ export function VideoGeneratorInput({
       {/* Prompt Suggestions */}
       {promptTemplates.length > 0 && (
         <div className="mt-4 flex items-center gap-2 flex-wrap">
+          <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
+            Trending prompts:
+          </span>
           <button
             onClick={refreshSuggestions}
             className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-secondary/50 hover:bg-muted/50 transition-colors text-sm text-muted-foreground hover:text-foreground"

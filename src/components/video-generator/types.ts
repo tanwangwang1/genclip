@@ -472,6 +472,8 @@ export type CreditCalculator = (params: {
 export interface GeneratorDefaults {
   /** Default generation type */
   generationType?: GenerationType;
+  /** Default prompt text (can be used for external prefill linkage) */
+  prompt?: string;
   /** Default video model ID */
   videoModel?: string;
   /** Default image model ID */

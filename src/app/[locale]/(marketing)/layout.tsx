@@ -14,7 +14,7 @@ export default async function MarketingLayout({
   const user = await getCurrentUser();
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col ambient-glow">
       {/* 全局渐变背景 - 所有营销页面共享 */}
       <div className="fixed inset-0 -z-20">
         <div className="absolute inset-0 dark:bg-[#0a0f0d] bg-background" />
@@ -22,7 +22,7 @@ export default async function MarketingLayout({
           className="absolute inset-0 hidden dark:block"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(16, 185, 129, 0.25), transparent 70%)",
+              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59, 130, 246, 0.18), transparent 70%)",
           }}
         />
         <div

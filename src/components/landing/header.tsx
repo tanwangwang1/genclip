@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
-import { Menu, Globe, Sun, Moon, Monitor } from "lucide-react";
+import { Menu, Globe } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { useTheme } from "next-themes";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -59,7 +58,6 @@ export function LandingHeader({ user }: { user?: User | null }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [scrolled, setScrolled] = useState(false);
-  const { theme, setTheme } = useTheme();
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -108,7 +106,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
       className={cn(
         "sticky top-0 z-50 transition-all duration-300",
         scrolled
-          ? "bg-background/40 backdrop-blur-xl backdrop-saturate-150 border-b border-white/10 dark:border-white/5 shadow-[0_1px_6px_0_rgba(0,0,0,0.04)]"
+          ? "bg-background/60 backdrop-blur-xl backdrop-saturate-150 border-b border-border/70 shadow-[0_10px_30px_rgba(0,0,0,0.28)]"
           : "bg-transparent"
       )}
     >
@@ -120,7 +118,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
             href="/"
             className="flex items-center gap-2 text-xl font-semibold"
           >
-            <Image src="/logo.svg" alt="Genclip" width={28} height={28} className="rounded-md" />
+            <Image src="/logo.png" alt="Genclip" width={28} height={28} className="rounded-md" />
             Genclip
           </LocaleLink>
 
@@ -240,35 +238,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Theme Toggle */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                  aria-label="Toggle theme"
-                >
-                  <Sun className="h-4 w-4 rotate-0 scale-100 transition-transform dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-transform dark:rotate-0 dark:scale-100" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="min-w-[120px] border-border/50 bg-background/95 backdrop-blur-sm shadow-xl"
-              >
-                <DropdownMenuItem onClick={() => setTheme("light")} className="cursor-pointer hover:bg-accent">
-                  <Sun className="mr-2 h-4 w-4" />
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")} className="cursor-pointer hover:bg-accent">
-                  <Moon className="mr-2 h-4 w-4" />
-                  Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")} className="cursor-pointer hover:bg-accent">
-                  <Monitor className="mr-2 h-4 w-4" />
-                  System
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {!user && <span className="h-4 w-px bg-border/70" aria-hidden="true" />}
 
             {/* Credits Display */}
             {user && (
@@ -313,9 +283,14 @@ export function LandingHeader({ user }: { user?: User | null }) {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button variant="default" size="sm" onClick={signInModal.onOpen}>
-                {t('Common.login')}
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" onClick={signInModal.onOpen}>
+                  {t('Common.login')}
+                </Button>
+                <Button asChild variant="default" size="sm">
+                  <LocaleLink href="/register">{t('Common.signup')}</LocaleLink>
+                </Button>
+              </div>
             )}
           </div>
         </nav>
@@ -327,7 +302,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
             href="/"
             className="flex items-center gap-2 text-lg font-semibold"
           >
-            <Image src="/logo.svg" alt="Genclip" width={28} height={28} className="rounded-md" />
+            <Image src="/logo.png" alt="Genclip" width={28} height={28} className="rounded-md" />
             Genclip
           </LocaleLink>
 
@@ -357,7 +332,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
                       href="/"
                       className="flex items-center gap-2"
                     >
-                      <Image src="/logo.svg" alt="Genclip" width={28} height={28} className="rounded-md" />
+                      <Image src="/logo.png" alt="Genclip" width={28} height={28} className="rounded-md" />
             Genclip
                     </LocaleLink>
                   </SheetTitle>
@@ -446,26 +421,6 @@ export function LandingHeader({ user }: { user?: User | null }) {
                     </button>
                   </div>
 
-                  {/* Theme Toggle */}
-                  <div className="flex items-center gap-2 p-2">
-                    <Sun className="h-4 w-4 shrink-0" />
-                    <div className="flex items-center gap-1">
-                      {(["light", "dark", "system"] as const).map((mode) => (
-                        <button
-                          key={mode}
-                          onClick={() => setTheme(mode)}
-                          className={cn(
-                            "text-sm px-2 py-1 rounded-md transition-colors",
-                            theme === mode
-                              ? "bg-accent text-accent-foreground font-medium"
-                              : "hover:text-foreground text-muted-foreground"
-                          )}
-                        >
-                          {mode === "light" ? "Light" : mode === "dark" ? "Dark" : "System"}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
                 {/* Auth Section */}
@@ -498,9 +453,14 @@ export function LandingHeader({ user }: { user?: User | null }) {
                       </button>
                     </div>
                   ) : (
-                    <Button variant="outline" onClick={signInModal.onOpen}>
-                      {t('Common.login')}
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                      <Button variant="outline" onClick={signInModal.onOpen}>
+                        {t('Common.login')}
+                      </Button>
+                      <Button asChild>
+                        <LocaleLink href="/register">{t('Common.signup')}</LocaleLink>
+                      </Button>
+                    </div>
                   )}
                 </div>
               </SheetContent>

@@ -113,7 +113,7 @@ function calculateVeo31Credits(params: CreditCalculationParams): number {
  *
  * 计算公式: duration × perSecond × qualityMultiplier
  */
-function calculateSeedanceCredits(params: CreditCalculationParams): number {
+function calculateSeedance15Credits(params: CreditCalculationParams): number {
   const duration = parseDuration(params.duration) || 4;
   const resolution = parseResolution(params.resolution);
   const hasAudio = params.generateAudio ?? true; // 默认有音频
@@ -134,6 +134,46 @@ function calculateSeedanceCredits(params: CreditCalculationParams): number {
   }
 
   return Math.ceil(duration * perSecond) * params.outputNumber;
+}
+
+function clampDuration(duration: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, duration));
+}
+
+function interpolateByDuration(
+  duration: number,
+  minDuration: number,
+  maxDuration: number,
+  minCredits: number,
+  maxCredits: number
+): number {
+  if (duration <= minDuration) return minCredits;
+  if (duration >= maxDuration) return maxCredits;
+  const ratio = (duration - minDuration) / (maxDuration - minDuration);
+  return Math.round(minCredits + (maxCredits - minCredits) * ratio);
+}
+
+/**
+ * Seedance 2.0 Pro（按你确认的展示口径）
+ * - 480p: 4s=25, 5s=32, ... 15s=94（= ceil(duration * 6.25)）
+ * - 720p: 4s=55, 15s=203
+ * - 1080p: 4s=123, 15s=458
+ */
+function calculateSeedance20Credits(params: CreditCalculationParams): number {
+  const rawDuration = parseDuration(params.duration) || 4;
+  const duration = clampDuration(rawDuration, 4, 15);
+  const resolution = parseResolution(params.resolution);
+
+  let credits: number;
+  if (resolution <= 480) {
+    credits = Math.ceil(duration * 6.25);
+  } else if (resolution >= 1080) {
+    credits = interpolateByDuration(duration, 4, 15, 123, 458);
+  } else {
+    credits = interpolateByDuration(duration, 4, 15, 55, 203);
+  }
+
+  return credits * params.outputNumber;
 }
 
 // ============================================================================
@@ -169,8 +209,10 @@ export function calculateVideoCredits(params: CreditCalculationParams): number {
       return calculateVeo31Credits(params);
 
     case "seedance-2.0-pro":
+      return calculateSeedance20Credits(params);
+
     case "seedance-1.5-pro":
-      return calculateSeedanceCredits(params);
+      return calculateSeedance15Credits(params);
 
     default:
       // 默认计算：基础积分 × 输出数量
@@ -258,10 +300,14 @@ export function getCreditRangeText(model: VideoModel): string {
     });
   } else if (model.id === "veo-3.1") {
     maxCredits = 60; // 固定价格
-  } else if (
-    model.id === "seedance-2.0-pro" ||
-    model.id === "seedance-1.5-pro"
-  ) {
+  } else if (model.id === "seedance-2.0-pro") {
+    maxCredits = calculateVideoCredits({
+      model,
+      duration: "15s",
+      resolution: "1080P",
+      outputNumber: 1,
+    });
+  } else if (model.id === "seedance-1.5-pro") {
     maxCredits = calculateVideoCredits({
       model,
       duration: "12s",

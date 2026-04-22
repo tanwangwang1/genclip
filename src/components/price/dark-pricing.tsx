@@ -93,6 +93,50 @@ export function DarkPricing({
     [allSubscriptionProducts]
   );
 
+  const yearlySaveBadge = useMemo(() => {
+    if (monthlyProducts.length === 0 || yearlyProducts.length === 0) {
+      return null;
+    }
+
+    const getPlanKey = (name: string) =>
+      name
+        .toLowerCase()
+        .replace(/\s*\(yearly\)\s*/g, "")
+        .replace(/\s*plan\s*/g, "")
+        .trim();
+
+    const monthlyByKey = new Map(
+      monthlyProducts.map((p) => [getPlanKey(p.name), p])
+    );
+
+    const yearlyByKey = new Map(
+      yearlyProducts.map((p) => [getPlanKey(p.name), p])
+    );
+
+    const preferredYearly =
+      yearlyProducts.find((p) => p.popular) ??
+      yearlyProducts[Math.floor(yearlyProducts.length / 2)] ??
+      yearlyProducts[0];
+
+    if (!preferredYearly) return null;
+
+    const key = getPlanKey(preferredYearly.name);
+    const monthlyMatch =
+      monthlyByKey.get(key) ??
+      monthlyProducts.find((p) => p.popular) ??
+      monthlyProducts[Math.floor(monthlyProducts.length / 2)] ??
+      monthlyProducts[0];
+
+    if (!monthlyMatch) return null;
+
+    const monthlyYearCost = monthlyMatch.price.amount * 12;
+    const yearlyCost = preferredYearly.price.amount;
+    const saveAmount = Math.max(0, Math.round((monthlyYearCost - yearlyCost) / 100));
+
+    if (saveAmount <= 0) return null;
+    return t("save_per_year", { amount: saveAmount });
+  }, [monthlyProducts, yearlyProducts, t]);
+
   const handleCheckout = (product: LocalizedPackage) => {
     if (!userId) {
       signInModal.onOpen();
@@ -119,22 +163,67 @@ export function DarkPricing({
           plan: product.id,
         },
       });
+      const dataObj = (data ?? null) as Record<string, unknown> | null;
+      const directUrlCandidates = [
+        dataObj?.url,
+        dataObj?.checkoutUrl,
+        dataObj?.checkout_url,
+        dataObj?.hostedCheckoutUrl,
+        dataObj?.hosted_checkout_url,
+        dataObj?.paymentUrl,
+        dataObj?.payment_url,
+      ];
+      const nestedData = (dataObj?.data ?? null) as Record<string, unknown> | null;
+      const nestedErrorMessage =
+        (typeof dataObj?.error === "string" ? dataObj.error : null) ??
+        (typeof nestedData?.error === "string" ? nestedData.error : null) ??
+        (typeof dataObj?.message === "string" ? dataObj.message : null) ??
+        (typeof nestedData?.message === "string" ? nestedData.message : null);
+      const checkoutUrl =
+        (directUrlCandidates.find((v) => typeof v === "string") as string | undefined) ??
+        (nestedData?.url as string | undefined) ??
+        (nestedData?.checkoutUrl as string | undefined) ??
+        (nestedData?.checkout_url as string | undefined) ??
+        (nestedData?.hostedCheckoutUrl as string | undefined) ??
+        (nestedData?.hosted_checkout_url as string | undefined) ??
+        (nestedData?.paymentUrl as string | undefined) ??
+        (nestedData?.payment_url as string | undefined) ??
+        null;
+      console.log("[Creem Debug] createCheckout result", {
+        productId: product.id,
+        successUrl,
+        data,
+        error,
+        checkoutUrl,
+        dataKeys: dataObj ? Object.keys(dataObj) : [],
+        nestedDataKeys: nestedData ? Object.keys(nestedData) : [],
+      });
+      if (dataObj) {
+        console.log("[Creem Debug] createCheckout data json", JSON.stringify(dataObj, null, 2));
+      }
 
       if (error) {
         toast.error("Checkout error", {
-          description: error.message ?? "Failed to create checkout session.",
+          description: error.message ?? nestedErrorMessage ?? "Failed to create checkout session.",
         });
         return;
       }
 
-      if (!data || !("url" in data) || !data.url) {
+      if (nestedErrorMessage) {
         toast.error("Checkout error", {
-          description: "Missing checkout URL from Creem.",
+          description: nestedErrorMessage,
         });
         return;
       }
 
-      window.location.href = data.url;
+      if (!checkoutUrl) {
+        toast.error("Checkout error", {
+          description: "Missing checkout URL from Creem. Please verify product and environment settings.",
+        });
+        return;
+      }
+
+      window.location.href = checkoutUrl;
     });
   };
 
@@ -202,48 +291,55 @@ export function DarkPricing({
             showBadge
           >
             {t("yearly")}
-            <span className="ml-1.5 rounded-md bg-primary px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
-              20% OFF
-            </span>
+            {yearlySaveBadge && (
+              <span className="ml-1.5 rounded-md bg-primary px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
+                {yearlySaveBadge}
+              </span>
+            )}
           </TabButton>
         </div>
       </div>
 
       {/* 价格卡片 */}
       {currentProducts.length > 0 ? (
-        <div className="mx-auto grid gap-5 bg-inherit py-5 md:grid-cols-[repeat(3,minmax(0,360px))] justify-center">
-          {currentProducts.map((product, index) => {
-            const isRecommended = product.popular === true;
-            const isCurrent = activeProductId === product.id && hasAccess;
+        <div className="w-full">
+          <div className="mx-auto grid gap-5 bg-inherit pt-8 pb-5 md:grid-cols-[repeat(3,minmax(0,360px))] justify-center">
+            {currentProducts.map((product, index) => {
+              const isRecommended = product.popular === true;
+              const isCurrent = activeProductId === product.id && hasAccess;
 
-            // 为每个产品生成对齐后的功能列表
-            const alignedFeatures = standardFeatures.map(feature => ({
-              ...feature,
-              included: product.localizedFeatures.some(f => f === feature.text),
-            }));
+              // 为每个产品生成对齐后的功能列表
+              const alignedFeatures = standardFeatures.map(feature => ({
+                ...feature,
+                included: product.localizedFeatures.some(f => f === feature.text),
+              }));
 
-            // 检查是否允许免费用户购买
-            const isRestricted = isFreeUser && product.allowFreeUser === false;
+              // 检查是否允许免费用户购买
+              const isRestricted = isFreeUser && product.allowFreeUser === false;
 
-            return (
-              <PricingCard
-                key={product.id}
-                product={product}
-                features={alignedFeatures}
-                isRecommended={isRecommended}
-                isCurrent={isCurrent}
-                userId={userId}
-                isPending={isPending}
-                isRestricted={isRestricted} // Pass restriction status
-                buyCreditsLabel={buyCreditsLabel}
-                dictPrice={dictPrice}
-                dictCredits={dictCredits}
-                onCheckout={handleCheckout}
-                onPortal={handlePortal}
-                signInModal={signInModal}
-              />
-            );
-          })}
+              return (
+                <PricingCard
+                  key={product.id}
+                  product={product}
+                  features={alignedFeatures}
+                  isRecommended={isRecommended}
+                  isCurrent={isCurrent}
+                  userId={userId}
+                  isPending={isPending}
+                  isRestricted={isRestricted} // Pass restriction status
+                  buyCreditsLabel={buyCreditsLabel}
+                  dictPrice={dictPrice}
+                  dictCredits={dictCredits}
+                  onCheckout={handleCheckout}
+                  onPortal={handlePortal}
+                  signInModal={signInModal}
+                />
+              );
+            })}
+          </div>
+          <p className="mt-3 text-center text-xs text-muted-foreground">
+            {t("credit_guide")}
+          </p>
         </div>
       ) : (
         <div className="py-12 text-center text-muted-foreground">
@@ -322,14 +418,21 @@ function PricingCard({
   return (
     <div
       className={cn(
-        "relative flex flex-col overflow-hidden rounded-xl border transition-all duration-200",
+        "relative flex flex-col overflow-visible rounded-xl border transition-all duration-200",
         isRecommended
-          ? "border-primary shadow-lg z-10 bg-secondary/5"
+          ? "border-primary shadow-[0_20px_60px_rgba(59,130,246,0.18)] z-10 bg-secondary/5"
           : "border-border bg-card hover:bg-muted/10"
       )}
     >
       {isRecommended && (
-        <div className="absolute top-0 right-0 left-0 h-1 bg-primary" />
+        <>
+          <div className="absolute top-0 right-0 left-0 h-1 bg-primary" />
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+            <span className="inline-flex items-center rounded-full bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary-foreground shadow-md">
+              {t("most_popular")}
+            </span>
+          </div>
+        </>
       )}
       <div className={cn(
         "min-h-[150px] items-start space-y-4 p-6",
@@ -388,7 +491,7 @@ function PricingCard({
                 "w-full rounded-lg py-2.5 text-sm font-semibold transition-colors flex items-center justify-center gap-2",
                 "hover:opacity-90",
                 isRecommended
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-[linear-gradient(135deg,#3B82F6_0%,#8B5CF6_100%)] text-primary-foreground shadow-[0_8px_24px_rgba(59,130,246,0.28)]"
                   : "border border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground"
               )}
             >
@@ -407,7 +510,7 @@ function PricingCard({
                         "disabled:opacity-50 disabled:cursor-not-allowed",
                         "hover:opacity-90",
                         isRecommended
-                          ? "bg-primary text-primary-foreground"
+                          ? "bg-[linear-gradient(135deg,#3B82F6_0%,#8B5CF6_100%)] text-primary-foreground shadow-[0_8px_24px_rgba(59,130,246,0.28)]"
                           : "border border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground"
                       )}
                     >
@@ -441,7 +544,7 @@ function PricingCard({
               "w-full rounded-lg py-2.5 text-sm font-semibold transition-colors",
               "hover:opacity-90",
               isRecommended
-                ? "bg-primary text-primary-foreground"
+                ? "bg-[linear-gradient(135deg,#3B82F6_0%,#8B5CF6_100%)] text-primary-foreground shadow-[0_8px_24px_rgba(59,130,246,0.28)]"
                 : "border border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground"
             )}
           >

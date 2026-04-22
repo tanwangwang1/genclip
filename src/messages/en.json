@@ -27,10 +27,10 @@
     "settings": "Settings"
   },
   "Hero": {
-    "badge": "Powered by Sora 2, Veo 3.1 & more",
-    "title": "Transform Your Ideas Into Stunning Videos",
-    "subtitle": "with AI",
-    "description": "Create professional AI-generated videos in minutes. From text to video, image to video, or enhance existing footage.",
+    "badge": "Powered by HappyHorse 1.0 & Seedance 2.0",
+    "title": "Cinematic Video Creation, Reimagined",
+    "subtitle": "for Visionary Creators",
+    "description": "Produce studio-grade AI videos in minutes - from text and image prompts to polished, high-fidelity motion.",
     "startCreating": "Start Creating Free",
     "viewExamples": "View Examples",
     "features": {
@@ -91,9 +91,9 @@
   },
   "Features": {
     "badge": "Powerful Features",
-    "title": "Everything You Need",
-    "subtitle": "Powerful features to create amazing videos",
-    "description": "Discover the tools and features that make video creation easy and fun",
+    "title": "Precision Creative Suite",
+    "subtitle": "Enterprise-grade capabilities for cinematic output",
+    "description": "A refined toolkit built for high-fidelity video generation, control, and production-ready workflows.",
     "learnMore": "Learn more",
     "bottomCTA": {
       "text": "Ready to transform your ideas into videos?",
@@ -305,12 +305,15 @@
     "mo": "/mo",
     "annual_info": "/year",
     "monthly_info": "per month",
+    "save_per_year": "Save ${amount}/yr",
     "go_to_dashboard": "Go to Dashboard",
     "signup": "Sign Up",
     "contact": "for support.",
     "contact_2": "We're here to help.",
     "manage_subscription": "Manage Subscription",
-    "upgrade": "Upgrade"
+    "upgrade": "Upgrade",
+    "most_popular": "Most Popular",
+    "credit_guide": "Credit guide: 8 Credits ≈ 4 seconds of video. Actual usage varies by model, duration, and quality."
   },
   "PricingFaq": {
     "faq": "Frequently Asked Questions",

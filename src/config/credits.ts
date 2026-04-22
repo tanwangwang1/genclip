@@ -193,8 +193,7 @@ export const CREDITS_CONFIG = {
             id: "seedance-1.5-pro",
             name: "Seedance 1.5 Pro",
             provider: "evolink" as const,
-            description:
-              "Seedance 1.5 Pro on Evolink — text, image, or first/last frame (up to 2 images).",
+            description: "Legacy / cost-effective option.",
             supportImageToVideo: true,
             maxDuration: 12,
             durations: [4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -377,6 +376,21 @@ export function calculateModelCredits(
   const is4K =
     resolution >= 2160 || params.quality?.toLowerCase().includes("4k");
 
+  const clampDuration = (duration: number, min: number, max: number): number =>
+    Math.min(max, Math.max(min, duration));
+  const interpolateByDuration = (
+    duration: number,
+    minDuration: number,
+    maxDuration: number,
+    minCredits: number,
+    maxCredits: number
+  ): number => {
+    if (duration <= minDuration) return minCredits;
+    if (duration >= maxDuration) return maxCredits;
+    const ratio = (duration - minDuration) / (maxDuration - minDuration);
+    return Math.round(minCredits + (maxCredits - minCredits) * ratio);
+  };
+
   let credits = 0;
 
   // 根据模型使用不同的计算逻辑
@@ -411,13 +425,24 @@ export function calculateModelCredits(
       break;
     }
 
-    case "seedance-1.5-pro":
-    case "seedance-2.0-pro": {
+    case "seedance-1.5-pro": {
       let perSecond = resolution <= 480 ? 2 : 4;
       if (isHighQuality) {
         perSecond = resolution <= 480 ? 4 : 8;
       }
       credits = params.duration * perSecond;
+      break;
+    }
+
+    case "seedance-2.0-pro": {
+      const duration = clampDuration(params.duration ?? 4, 4, 15);
+      if (resolution <= 480) {
+        credits = Math.ceil(duration * 6.25); // 4s=25, 5s=32, 15s=94
+      } else if (resolution >= 1080) {
+        credits = interpolateByDuration(duration, 4, 15, 123, 458);
+      } else {
+        credits = interpolateByDuration(duration, 4, 15, 55, 203);
+      }
       break;
     }
 

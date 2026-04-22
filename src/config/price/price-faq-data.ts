@@ -21,19 +21,19 @@ export const priceFaqDataMap: Record<string, FAQItem[]> = {
       id: "item-2",
       question: "Basic 计划的费用是多少？",
       answer:
-        "Basic 月付计划每月 9.90 美元，提供 280 积分（约 28 个视频）。年付计划 99 美元，提供 3,360 积分（约 336 个视频），相当于省了 2 个月的费用。",
+        "Basic 月付计划每月 9.90 美元，提供 350 积分（约 35 个视频）。年付计划 99 美元，提供 4,240 积分（约 424 个视频），相当于省了 2 个月的费用。",
     },
     {
       id: "item-3",
       question: "Pro 计划包含哪些功能？",
       answer:
-        "Pro 计划每月提供 960 积分（约 96 个视频），每月 29.90 美元。年付 299 美元，提供 11,520 积分。Pro 计划包含无水印、优先支持和商业使用权，是最受欢迎的选择。",
+        "Pro 计划每月提供 1,420 积分（约 142 个视频），每月 29.90 美元。年付 299 美元，提供 14,950 积分。Pro 计划包含无水印、优先支持和商业使用权，是最受欢迎的选择。",
     },
     {
       id: "item-4",
       question: "我可以一次性购买积分吗？",
       answer:
-        "是的！我们提供一次性积分包：Starter Pack（280 积分，14.90 美元）、Standard Pack（960 积分，39.90 美元）和 Pro Pack（2,850 积分，99.90 美元）。积分包有效期为 1 年。",
+        "是的！我们提供一次性积分包：Starter Pack（350 积分，14.90 美元）、Standard Pack（1,420 积分，49.90 美元）和 Pro Pack（4,000 积分，119.90 美元）。积分包有效期为 1 年。",
     },
     {
       id: "item-5",
@@ -59,19 +59,19 @@ export const priceFaqDataMap: Record<string, FAQItem[]> = {
       id: "item-2",
       question: "How much does the Basic plan cost?",
       answer:
-        "The Basic monthly plan is $9.90/month with 280 credits (~28 videos). The yearly plan is $99 with 3,360 credits (~336 videos), saving you 2 months of payments.",
+        "The Basic monthly plan is $9.90/month with 350 credits (~35 videos). The yearly plan is $99 with 4,240 credits (~424 videos), saving you 2 months of payments.",
     },
     {
       id: "item-3",
       question: "What's included in the Pro plan?",
       answer:
-        "The Pro plan provides 960 credits per month (~96 videos) at $29.90/month. The yearly plan is $299 with 11,520 credits. The Pro plan includes watermark-free videos, priority support, and commercial license. It's our most popular choice.",
+        "The Pro plan provides 1,420 credits per month (~142 videos) at $29.90/month. The yearly plan is $299 with 14,950 credits. The Pro plan includes watermark-free videos, priority support, and commercial license. It's our most popular choice.",
     },
     {
       id: "item-4",
       question: "Can I purchase credits one-time?",
       answer:
-        "Yes! We offer one-time credit packages: Starter Pack (280 credits, $14.90), Standard Pack (960 credits, $39.90), and Pro Pack (2,850 credits, $99.90). Credit packages are valid for 1 year.",
+        "Yes! We offer one-time credit packages: Starter Pack (350 credits, $14.90), Standard Pack (1,420 credits, $49.90), and Pro Pack (4,000 credits, $119.90). Credit packages are valid for 1 year.",
     },
     {
       id: "item-5",
@@ -97,19 +97,19 @@ export const priceFaqDataMap: Record<string, FAQItem[]> = {
       id: "item-2",
       question: "Basic プランの費用はいくらですか？",
       answer:
-        "Basic 月額プランは月額 9.90 ドルで 280 クレジット（約 28 本の動画）。年額プランは 99 ドルで 3,360 クレジット（約 336 本の動画）で、2 ヶ月分の支払いを節約できます。",
+        "Basic 月額プランは月額 9.90 ドルで 350 クレジット（約 35 本の動画）。年額プランは 99 ドルで 4,240 クレジット（約 424 本の動画）で、2 ヶ月分の支払いを節約できます。",
     },
     {
       id: "item-3",
       question: "Pro プランには何が含まれていますか？",
       answer:
-        "Pro プランは月額 29.90 ドルで 960 クレジット（約 96 本の動画）。年額プランは 299 ドルで 11,520 クレジット。Pro プランにはウォーターマークなし、優先サポート、商用利用権が含まれ、最も人気のある選択肢です。",
+        "Pro プランは月額 29.90 ドルで 1,420 クレジット（約 142 本の動画）。年額プランは 299 ドルで 14,950 クレジット。Pro プランにはウォーターマークなし、優先サポート、商用利用権が含まれ、最も人気のある選択肢です。",
     },
     {
       id: "item-4",
       question: "クレジットを一回限りの購入でできますか？",
       answer:
-        "はい！Starter Pack（280 クレジット、14.90 ドル）、Standard Pack（960 クレジット、39.90 ドル）、Pro Pack（2,850 クレジット、99.90 ドル）の一回限りのクレジットパッケージをご用意しています。有効期間は 1 年です。",
+        "はい！Starter Pack（350 クレジット、14.90 ドル）、Standard Pack（1,420 クレジット、49.90 ドル）、Pro Pack（4,000 クレジット、119.90 ドル）の一回限りのクレジットパッケージをご用意しています。有効期間は 1 年です。",
     },
     {
       id: "item-5",
@@ -135,19 +135,19 @@ export const priceFaqDataMap: Record<string, FAQItem[]> = {
       id: "item-2",
       question: "Basic 플랜의 비용은 얼마인가요?",
       answer:
-        "Basic 월간 플랜은 월 $9.90에 280 크레딧(약 28개 비디오)을 제공합니다. 연간 플랜은 $99에 3,360 크레딧(약 336개 비디오)을 제공하며 2개월치 요금을 절약할 수 있습니다.",
+        "Basic 월간 플랜은 월 $9.90에 350 크레딧(약 35개 비디오)을 제공합니다. 연간 플랜은 $99에 4,240 크레딧(약 424개 비디오)을 제공하며 2개월치 요금을 절약할 수 있습니다.",
     },
     {
       id: "item-3",
       question: "Pro 플랜에는 무엇이 포함되어 있나요?",
       answer:
-        "Pro 플랜은 월 $29.90에 월 960 크레딧(약 96개 비디오)을 제공합니다. 연간 플랜은 $299에 11,520 크레딧을 제공합니다. Pro 플랜에는 워터마크 제거, 우선 지원, 상업용 라이선스가 포함되어 있으며 가장 인기 있는 선택입니다.",
+        "Pro 플랜은 월 $29.90에 월 1,420 크레딧(약 142개 비디오)을 제공합니다. 연간 플랜은 $299에 14,950 크레딧을 제공합니다. Pro 플랜에는 워터마크 제거, 우선 지원, 상업용 라이선스가 포함되어 있으며 가장 인기 있는 선택입니다.",
     },
     {
       id: "item-4",
       question: "일회성 크레딧을 구매할 수 있나요?",
       answer:
-        "네! Starter Pack(280 크레딧, $14.90), Standard Pack(960 크레딧, $39.90), Pro Pack(2,850 크레딧, $99.90)의 일회성 크레딧 패키지를 제공합니다. 크레딧 패키지는 1년 동안 유효합니다.",
+        "네! Starter Pack(350 크레딧, $14.90), Standard Pack(1,420 크레딧, $49.90), Pro Pack(4,000 크레딧, $119.90)의 일회성 크레딧 패키지를 제공합니다. 크레딧 패키지는 1년 동안 유효합니다.",
     },
     {
       id: "item-5",

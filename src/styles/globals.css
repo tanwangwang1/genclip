@@ -112,8 +112,9 @@
   --shadow-2xl: var(--shadow-2xl);
 
   /* ===== 字体 ===== */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-outfit);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
   /* ===== 动画 ===== */
   --animate-shiny-text: shiny-text 8s infinite;
@@ -279,38 +280,38 @@
  * 【深色模式】从主题生成器复制的内容直接替换这里
  * ============================================ */
 .dark {
-  --background: oklch(0.1500 0.0200 310.0000);
-  --foreground: oklch(0.9300 0.0200 330.0000);
-  --card: oklch(0.2000 0.0300 320.0000);
-  --card-foreground: oklch(0.9300 0.0200 330.0000);
-  --popover: oklch(0.2000 0.0300 320.0000);
-  --popover-foreground: oklch(0.9300 0.0200 330.0000);
-  --primary: oklch(0.6200 0.2200 330.0000);
-  --primary-foreground: oklch(1.0000 0 0);
-  --secondary: oklch(0.2500 0.0400 320.0000);
-  --secondary-foreground: oklch(0.8700 0.0300 330.0000);
-  --muted: oklch(0.2200 0.0350 318.0000);
-  --muted-foreground: oklch(0.7100 0.0300 320.0000);
-  --accent: oklch(0.2800 0.0450 325.0000);
-  --accent-foreground: oklch(0.8700 0.0300 330.0000);
+  --background: #0b0c10;
+  --foreground: #f8fafc;
+  --card: #18181b;
+  --card-foreground: #f8fafc;
+  --popover: #18181b;
+  --popover-foreground: #f8fafc;
+  --primary: #3b82f6;
+  --primary-foreground: #f8fafc;
+  --secondary: #1f2937;
+  --secondary-foreground: #f8fafc;
+  --muted: #1f2937;
+  --muted-foreground: #94a3b8;
+  --accent: #27272a;
+  --accent-foreground: #f8fafc;
   --destructive: oklch(0.8077 0.1035 19.5706);
-  --destructive-foreground: oklch(0.1500 0.0200 310.0000);
-  --border: oklch(0.2500 0.0400 320.0000);
-  --input: oklch(0.2500 0.0400 320.0000);
-  --ring: oklch(0.6200 0.2200 330.0000);
-  --chart-1: oklch(0.6200 0.2200 330.0000);
-  --chart-2: oklch(0.5500 0.2000 328.0000);
-  --chart-3: oklch(0.4800 0.1800 326.0000);
-  --chart-4: oklch(0.4200 0.1600 324.0000);
-  --chart-5: oklch(0.3600 0.1400 322.0000);
-  --sidebar: oklch(0.2500 0.0400 320.0000);
-  --sidebar-foreground: oklch(0.9300 0.0200 330.0000);
-  --sidebar-primary: oklch(0.6200 0.2200 330.0000);
-  --sidebar-primary-foreground: oklch(1.0000 0 0);
-  --sidebar-accent: oklch(0.2800 0.0450 325.0000);
-  --sidebar-accent-foreground: oklch(0.8700 0.0300 330.0000);
-  --sidebar-border: oklch(0.2500 0.0400 320.0000);
-  --sidebar-ring: oklch(0.6200 0.2200 330.0000);
+  --destructive-foreground: #0b0c10;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #8b5cf6;
+  --chart-1: #3b82f6;
+  --chart-2: #8b5cf6;
+  --chart-3: #60a5fa;
+  --chart-4: #a78bfa;
+  --chart-5: #c4b5fd;
+  --sidebar: #18181b;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #f8fafc;
+  --sidebar-accent: #27272a;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: #27272a;
+  --sidebar-ring: #8b5cf6;
   --radius: 0.6rem;
   --shadow-2xs: 0px 8px 16px -4px hsl(0 0% 0% / 0.04);
   --shadow-xs: 0px 8px 16px -4px hsl(0 0% 0% / 0.04);
@@ -357,12 +358,42 @@ body {
   @apply overscroll-none bg-transparent;
 }
 
+.dark .ambient-glow {
+  position: relative;
+}
+
+.dark .ambient-glow::before,
+.dark .ambient-glow::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(80px);
+  opacity: 0.25;
+}
+
+.dark .ambient-glow::before {
+  width: 38rem;
+  height: 38rem;
+  left: -16rem;
+  top: -14rem;
+  background: radial-gradient(circle, #3b82f6 0%, rgba(59, 130, 246, 0) 70%);
+}
+
+.dark .ambient-glow::after {
+  width: 34rem;
+  height: 34rem;
+  right: -14rem;
+  bottom: -12rem;
+  background: radial-gradient(circle, #8b5cf6 0%, rgba(139, 92, 246, 0) 70%);
+}
+
 /* ============================================
  * 自定义滚动条样式
  * ============================================ */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: hsl(var(--muted-foreground) / 0.3) hsl(var(--muted));
+  scrollbar-color: color-mix(in srgb, var(--muted-foreground) 35%, transparent) var(--muted);
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -371,17 +402,17 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
+  background: var(--muted);
   border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
+  background: color-mix(in srgb, var(--muted-foreground) 35%, transparent);
   border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+  background: color-mix(in srgb, var(--muted-foreground) 55%, transparent);
 }
 
 /* ============================================

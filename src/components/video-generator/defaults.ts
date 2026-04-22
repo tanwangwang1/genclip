@@ -67,7 +67,7 @@ export const DEFAULT_VIDEO_MODELS: VideoModel[] = [
     name: "Seedance 1.5 Pro",
     icon: "https://videocdn.pollo.ai/web-cdn/pollo/production/cm3po9yyf0003oh0c2iyt8ajy/image/1754894158793-1e7ef687-c3c1-4f44-8b06-d044a8121f66.svg",
     color: "#db2777",
-    description: "Evolink Seedance 1.5 — text, image, or first/last frame (2 images)",
+    description: "Legacy / cost-effective",
     maxDuration: "12 sec",
     creditCost: 16,
     durations: ["4s", "5s", "6s", "7s", "8s", "9s", "10s", "11s", "12s"],
@@ -345,6 +345,7 @@ export const DEFAULT_CONFIG: GeneratorConfig = {
  */
 export const DEFAULT_DEFAULTS: GeneratorDefaults = {
   generationType: "video",
+  prompt: "",
   videoModel: "seedance-2.0-pro",
   imageModel: "flux-pro",
   videoMode: "text-image-to-video",

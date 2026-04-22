@@ -27,7 +27,7 @@
     "settings": "设置"
   },
   "Hero": {
-    "badge": "支持 Sora 2、Veo 3.1 等模型",
+    "badge": "核心引擎：HappyHorse 1.0 与 Seedance 2.0",
     "title": "将您的想法转化为精彩视频",
     "subtitle": "使用 AI",
     "description": "在几分钟内创建专业的 AI 生成视频。支持文本转视频、图片转视频，或增强现有素材。",
@@ -243,23 +243,23 @@
     "packages": {
       "starter": {
         "name": "入门积分包",
-        "description": "280 积分 - 适合试用体验"
+        "description": "350 积分 - 适合试用体验"
       },
       "basic": {
         "name": "基础版",
-        "description": "280 积分/月 - 适合轻度使用"
+        "description": "350 积分/月 - 适合轻度使用"
       },
       "pro": {
         "name": "专业版",
-        "description": "960 积分/月 - 适合专业人士"
+        "description": "1,420 积分/月 - 适合专业人士"
       },
       "team": {
         "name": "旗舰版",
-        "description": "2,850 积分/月 - 适合重度用户"
+        "description": "4,000 积分/月 - 适合重度用户"
       },
       "standard": {
         "name": "标准积分包",
-        "description": "960 积分 - 性价比之选"
+        "description": "1,420 积分 - 性价比之选"
       }
     },
     "features": {
@@ -305,12 +305,15 @@
     "mo": "/月",
     "annual_info": "/年",
     "monthly_info": "每月",
+    "save_per_year": "每年省 ${amount}",
     "go_to_dashboard": "前往控制台",
     "signup": "注册",
     "contact": "获取支持。",
     "contact_2": "我们随时为您提供帮助。",
     "manage_subscription": "管理订阅",
-    "upgrade": "升级"
+    "upgrade": "升级",
+    "most_popular": "最受欢迎",
+    "credit_guide": "积分说明：8 积分约可生成 4 秒视频。实际消耗会因模型、时长与清晰度而变化。"
   },
   "PricingFaq": {
     "faq": "常见问题",

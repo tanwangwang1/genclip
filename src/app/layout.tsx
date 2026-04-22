@@ -1,5 +1,4 @@
-import { Inter as FontSans } from "next/font/google";
-import localFont from "next/font/local";
+import { Inter, Outfit } from "next/font/google";
 import { getLocale, getMessages } from "next-intl/server";
 
 import "@/styles/globals.css";
@@ -18,15 +17,14 @@ import { PlausibleAnalytics } from "@/components/plausible-provider";
 import { i18n } from "@/config/i18n-config";
 import { siteConfig } from "@/config/site";
 
-const fontSans = FontSans({
+const fontSans = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
 });
 
-// Font files can be colocated inside of `pages`
-const fontHeading = localFont({
-  src: "../styles/fonts/CalSans-SemiBold.woff2",
-  variable: "--font-heading",
+const fontHeading = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
 });
 
 
@@ -132,8 +130,9 @@ export default async function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          enableSystem={false}
+          forcedTheme="dark"
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages}>
