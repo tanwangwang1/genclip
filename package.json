@@ -23,7 +23,7 @@
     "script:test-proxy": "node scripts/test-proxy.mjs"
   },
   "dependencies": {
-    "@creem_io/better-auth": "^0.0.12",
+    "@creem_io/better-auth": "^1.1.0",
     "@dinero.js/currencies": "2.0.0-alpha.14",
     "@formatjs/intl-localematcher": "0.5.4",
     "@hookform/resolvers": "3.3.4",

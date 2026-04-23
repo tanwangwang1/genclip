@@ -196,12 +196,12 @@ export const SUBSCRIPTION_PRODUCTS = [
  * - true:  所有用户都可以购买此积分包
  * - false: 只有订阅用户才能购买此积分包
  * - 不填: 默认为 true（所有用户可购买）
- *
+ *   #"prod_3rXuLL8JLBGd7tIxZc1lnI", // 从 Creem 后台复制 Starter Pack Product ID
  * ⚠️ 重要：id 字段必须是 Creem 后台的 Product ID（格式：prod_xxx）
  */
 export const CREDIT_PACKAGES: CreditPackageConfig[] = [
   {
-    id: "prod_3rXuLL8JLBGd7tIxZc1lnI", // 从 Creem 后台复制 Starter Pack Product ID
+    id: "prod_28mAuy8IckwoQp8PgyeR8x",
     name: "Starter Pack",
     priceUsd: 14.9,
     credits: 350, // 和 Basic 月付积分相同

@@ -52,7 +52,7 @@ export function CreemSubscriptionCard({ dict }: CreemSubscriptionCardProps) {
 
   const handlePortal = () => {
     startTransition(async () => {
-      const { data, error } = await creem.createPortal();
+      const { data, error } = await creem.createPortal({});
       if (error) {
         toast.error("Portal error", {
           description: error.message ?? "Failed to open customer portal.",

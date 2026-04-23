@@ -19,7 +19,16 @@ import * as schema from "@/db/schema";
 import { env } from "./env.mjs";
 import { eq } from "drizzle-orm";
 
-const CREEM_FETCH_DEBUG = process.env.CREEM_FETCH_DEBUG === "1";
+const CREEM_FETCH_DEBUG =
+  process.env.CREEM_FETCH_DEBUG === "1" ||
+  process.env.CREEM_FETCH_DEBUG === "true";
+const CREEM_TEST_MODE_OVERRIDE = process.env.CREEM_TEST_MODE;
+const RESOLVED_CREEM_TEST_MODE =
+  CREEM_TEST_MODE_OVERRIDE === "1" || CREEM_TEST_MODE_OVERRIDE === "true"
+    ? true
+    : CREEM_TEST_MODE_OVERRIDE === "0" || CREEM_TEST_MODE_OVERRIDE === "false"
+      ? false
+      : (process.env.CREEM_API_KEY?.startsWith("creem_test_") ?? false);
 
 if (
   CREEM_FETCH_DEBUG &&
@@ -39,7 +48,10 @@ if (
 
     const response = await originalFetch(input, init);
 
-    if (url.includes("api.creem.io/v1/checkouts")) {
+    if (
+      url.includes("api.creem.io/v1/checkouts") ||
+      url.includes("test-api.creem.io/v1/checkouts")
+    ) {
       let parsedBody: unknown = null;
       try {
         const rawBody = await response.clone().text();
@@ -97,7 +109,7 @@ const toLogString = (value: unknown) => {
 };
 
 const debugLogger =
-  process.env.NODE_ENV === "development"
+  process.env.NODE_ENV === "development" || CREEM_FETCH_DEBUG
     ? {
       level: "debug" as const,
       log: (level: "debug" | "info" | "warn" | "error", message: string, ...args: unknown[]) => {
@@ -164,11 +176,19 @@ const plugins: AuthPlugin[] = [
 ];
 
 if (env.CREEM_API_KEY) {
+  if (CREEM_FETCH_DEBUG) {
+    console.log("[Creem Debug] init", {
+      keyPrefix: env.CREEM_API_KEY.startsWith("creem_test_") ? "creem_test_" : "creem_",
+      resolvedTestMode: RESOLVED_CREEM_TEST_MODE,
+      appUrl: env.NEXT_PUBLIC_APP_URL,
+    });
+  }
+
   plugins.push(
     creem({
       apiKey: env.CREEM_API_KEY,
       webhookSecret: env.CREEM_WEBHOOK_SECRET,
-      testMode: process.env.NODE_ENV !== "production",
+      testMode: RESOLVED_CREEM_TEST_MODE,
       persistSubscriptions: true,
       defaultSuccessUrl: "/dashboard",
 
