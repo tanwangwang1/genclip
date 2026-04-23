@@ -152,7 +152,7 @@ const plugins: AuthPlugin[] = [
         : "Activate your account";
 
       try {
-        await resend.emails.send({
+        const resendResult = await resend.emails.send({
           from: env.RESEND_FROM,
           to: email,
           subject: authSubject,
@@ -166,8 +166,18 @@ const plugins: AuthPlugin[] = [
             "X-Entity-Ref-ID": new Date().getTime() + "",
           },
         });
+        console.log("[Auth] Magic link email sent", {
+          email,
+          mailType: userVerified ? "login" : "register",
+          resendId: resendResult.data?.id ?? null,
+          resendError: resendResult.error ?? null,
+        });
       } catch (error) {
-        console.error("Failed to send magic link email:", error);
+        console.error("Failed to send magic link email:", {
+          email,
+          mailType: userVerified ? "login" : "register",
+          error,
+        });
         throw error;
       }
     },

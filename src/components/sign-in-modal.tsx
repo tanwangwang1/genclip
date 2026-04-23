@@ -57,10 +57,18 @@ export const SignInModalContent = ({ lang }: SignInModalContentProps) => {
     setSignInClicked("email");
 
     try {
-      await authClient.signIn.magicLink({
+      const { error } = await authClient.signIn.magicLink({
         email: email.toLowerCase(),
         callbackURL,
       });
+
+      if (error) {
+        console.error("Magic link signIn error:", error);
+        toast.error("Something went wrong", {
+          description: error.message ?? "Failed to send sign-in email. Please try again.",
+        });
+        return;
+      }
 
       toast.success("Check your email", {
         description: "We sent you a login link. Be sure to check your spam too.",
