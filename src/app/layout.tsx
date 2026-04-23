@@ -76,10 +76,11 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo.png", type: "image/png" },
     ],
-    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.ico",
+    apple: "/logo.png",
   },
   metadataBase: new URL(siteConfig.url),
 };
@@ -114,7 +115,7 @@ export default async function RootLayout({
                   "@type": "Organization",
                   name: siteConfig.name,
                   url: siteConfig.url,
-                  logo: `${siteConfig.url}/logo.svg`,
+                  logo: `${siteConfig.url}/logo.png`,
                 },
               ],
             }),
