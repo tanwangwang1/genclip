@@ -27,7 +27,7 @@
     "settings": "Settings"
   },
   "Hero": {
-    "badge": "Powered by HappyHorse 1.0 & Seedance 2.0",
+    "badge": "Powered by Seedance 2.0 & Seedance 1.5 Pro",
     "title": "Cinematic Video Creation, Reimagined",
     "subtitle": "for Visionary Creators",
     "description": "Produce studio-grade AI videos in minutes - from text and image prompts to polished, high-fidelity motion.",
@@ -229,6 +229,7 @@
     "copyright": "© {year} Genclip. All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
+    "refund": "Refund Policy",
     "cookie": "Cookie Policy"
   },
   "Credits": {
@@ -349,6 +350,8 @@
     "singup_title": "Don't have an account? Sign up now.",
     "signin_email": "Log in with Email",
     "signin_others": "Or continue with",
+    "continue_google": "Continue with Google",
+    "one_tap_hint": "If you're already signed into Google, a one-tap prompt may appear automatically.",
     "signup": "Sign up",
     "privacy": "only your email and profile picture will be stored.",
     "signup_github": "Sign Up with Github",
@@ -366,6 +369,7 @@
     "continue_google": "Continue with Google",
     "continue_email": "Continue with Email",
     "or_continue_with": "or continue with",
+    "one_tap_hint": "If you're already signed into Google, a one-tap prompt may appear automatically.",
     "email_placeholder": "name@example.com",
     "terms_notice": "By continuing, you agree to our Terms of Service and Privacy Policy."
   },

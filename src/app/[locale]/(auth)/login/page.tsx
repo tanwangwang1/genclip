@@ -42,11 +42,12 @@ export default async function LoginPage({
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
           <Image
-            src="/logo.svg"
-            className="mx-auto"
+            src="/logo.png"
+            className="mx-auto rounded-md"
             width="64"
             height="64"
             alt="Genclip Logo - AI Video Generation Platform"
+            priority
           />
           <h1 className="text-2xl font-semibold tracking-tight">
             {t("welcome_back")}

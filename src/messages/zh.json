@@ -27,7 +27,7 @@
     "settings": "设置"
   },
   "Hero": {
-    "badge": "核心引擎：HappyHorse 1.0 与 Seedance 2.0",
+    "badge": "核心引擎：Seedance 2.0 与 Seedance 1.5 Pro",
     "title": "将您的想法转化为精彩视频",
     "subtitle": "使用 AI",
     "description": "在几分钟内创建专业的 AI 生成视频。支持文本转视频、图片转视频，或增强现有素材。",
@@ -229,6 +229,7 @@
     "copyright": "© {year} Genclip. 保留所有权利。",
     "privacy": "隐私政策",
     "terms": "服务条款",
+    "refund": "退款政策",
     "cookie": "Cookie 政策"
   },
   "Credits": {
@@ -349,6 +350,8 @@
     "singup_title": "还没有账户？立即注册。",
     "signin_email": "用电子邮件登录",
     "signin_others": "或者继续使用",
+    "continue_google": "使用 Google 继续",
+    "one_tap_hint": "如果您已登录 Google，页面可能会自动弹出一键登录提示。",
     "signup": "注册",
     "privacy": "只有您的电子邮件和头像会被存储。",
     "signup_github": "使用 Github 注册",
@@ -366,6 +369,7 @@
     "continue_google": "使用 Google 继续",
     "continue_email": "使用邮箱继续",
     "or_continue_with": "或使用以下方式继续",
+    "one_tap_hint": "如果您已登录 Google，页面可能会自动弹出一键登录提示。",
     "email_placeholder": "name@example.com",
     "terms_notice": "继续即表示您同意我们的服务条款和隐私政策。"
   },

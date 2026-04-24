@@ -201,11 +201,11 @@ export const SUBSCRIPTION_PRODUCTS = [
  */
 export const CREDIT_PACKAGES: CreditPackageConfig[] = [
   {
-    id: "prod_28mAuy8IckwoQp8PgyeR8x",
+    id: "prod_3rXuLL8JLBGd7tIxZc1lnI", // 从 Creem 后台复制 Starter Pack Product ID #"prod_28mAuy8IckwoQp8PgyeR8x",
     name: "Starter Pack",
     priceUsd: 14.9,
     credits: 350, // 和 Basic 月付积分相同
-    popular: true, // 推荐
+    popular: false,
     enabled: true,
     allowFreeUser: true, // 所有用户可购买
     features: ["hd_videos", "fast_generation"],
@@ -215,7 +215,7 @@ export const CREDIT_PACKAGES: CreditPackageConfig[] = [
     name: "Standard Pack",
     priceUsd: 49.9, // 按 PRICING_REFERENCE 固定值
     credits: 1420, // 和 Pro 月付积分相同
-    popular: false,
+    popular: true, // 推荐
     enabled: true,
     allowFreeUser: false, // 仅订阅用户
     features: ["hd_videos", "fast_generation", "no_watermark"],

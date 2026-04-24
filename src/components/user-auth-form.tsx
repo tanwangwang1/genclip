@@ -15,6 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
+const cancelGoogleOneTap = () => {
+  const googleApi = (window as Window & { google?: any }).google?.accounts?.id;
+  googleApi?.cancel?.();
+};
+
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   lang: string;
   disabled?: boolean;
@@ -125,6 +130,7 @@ export function UserAuthForm({
         className={cn(buttonVariants({ variant: "outline" }))}
         onClick={() => {
           setIsGoogleLoading(true);
+          cancelGoogleOneTap();
           authClient.signIn
             .social({
               provider: "google",
@@ -142,8 +148,11 @@ export function UserAuthForm({
         ) : (
           <Icons.Google className="mr-2 h-4 w-4" />
         )}{" "}
-        Continue with Google
+        {t("continue_google")}
       </button>
+      <p className="text-center text-xs text-muted-foreground">
+        {t("one_tap_hint")}
+      </p>
     </div>
   );
 }

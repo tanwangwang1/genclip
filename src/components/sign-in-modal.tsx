@@ -14,6 +14,11 @@ import { siteConfig } from "@/config/site";
 import { useSigninModal } from "@/hooks/use-signin-modal";
 import { toast } from "sonner";
 
+const cancelGoogleOneTap = () => {
+  const googleApi = (window as Window & { google?: any }).google?.accounts?.id;
+  googleApi?.cancel?.();
+};
+
 interface SignInModalContentProps {
   lang: string;
 }
@@ -30,6 +35,7 @@ export const SignInModalContent = ({ lang }: SignInModalContentProps) => {
 
   const handleSocialLogin = async (provider: "google") => {
     setSignInClicked(provider);
+    cancelGoogleOneTap();
     try {
       await authClient.signIn.social({
         provider,
@@ -104,19 +110,24 @@ export const SignInModalContent = ({ lang }: SignInModalContentProps) => {
       <div className="flex flex-col space-y-4 bg-secondary/50 px-4 py-8">
         {/* Google Login - Priority */}
         {siteConfig.auth.enableGoogleLogin && (
-          <Button
-            variant="default"
-            className="w-full"
-            disabled={isLoading}
-            onClick={() => handleSocialLogin("google")}
-          >
-            {signInClicked === "google" ? (
-              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Icons.Google className="mr-2 h-4 w-4" />
-            )}
-            {t("continue_google")}
-          </Button>
+          <div className="space-y-2">
+            <Button
+              variant="default"
+              className="w-full"
+              disabled={isLoading}
+              onClick={() => handleSocialLogin("google")}
+            >
+              {signInClicked === "google" ? (
+                <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Icons.Google className="mr-2 h-4 w-4" />
+              )}
+              {t("continue_google")}
+            </Button>
+            <p className="text-center text-xs text-muted-foreground">
+              {t("one_tap_hint")}
+            </p>
+          </div>
         )}
 
         {/* Magic Link Email Login */}

@@ -7,6 +7,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { NextIntlClientProvider } from "next-intl";
 
+import { env } from "@/lib/auth/env.mjs";
+import { GoogleOneTap } from "@/components/auth/google-one-tap";
 import { cn } from "@/components/ui";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/components/query-provider";
@@ -139,6 +141,11 @@ export default async function RootLayout({
           <NextIntlClientProvider messages={messages}>
             <QueryProvider>
               <PlausibleAnalytics />
+              <GoogleOneTap
+                clientId={env.GOOGLE_CLIENT_ID}
+                locale={locale}
+                defaultRedirectPath={siteConfig.routes.defaultLoginRedirect}
+              />
               {children}
               <Analytics />
               <SpeedInsights />

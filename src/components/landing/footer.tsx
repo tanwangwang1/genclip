@@ -35,6 +35,7 @@ export function LandingFooter() {
       links: [
         { title: t('privacy'), href: "/privacy" },
         { title: t('terms'), href: "/terms" },
+        { title: t('refund'), href: "/refund-policy" },
         // { title: t('cookie'), href: "/cookies" },
       ],
     },
