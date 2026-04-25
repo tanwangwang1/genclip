@@ -27,7 +27,7 @@ const features = [
     icon: Video,
     titleKey: "textToVideo.title",
     descKey: "textToVideo.description",
-    stat: { value: 30, suffix: "s", labelKey: "textToVideo.stat" },
+    tagKey: "textToVideo.stat",
     gradient: { from: "#9E7AFF", to: "#FE8BBB" },
     featured: true,
   },
@@ -35,7 +35,7 @@ const features = [
     icon: Image,
     titleKey: "imageToVideo.title",
     descKey: "imageToVideo.description",
-    stat: { value: 1080, suffix: "p", labelKey: "imageToVideo.stat" },
+    tagKey: "imageToVideo.stat",
     gradient: { from: "#6366F1", to: "#8B5CF6" },
     featured: false,
   },
@@ -43,7 +43,7 @@ const features = [
     icon: Layers,
     titleKey: "referenceGen.title",
     descKey: "referenceGen.description",
-    stat: { value: 9, suffix: "+", labelKey: "referenceGen.stat" },
+    tagKey: "referenceGen.stat",
     gradient: { from: "#06B6D4", to: "#22D3EE" },
     featured: false,
   },
@@ -178,20 +178,11 @@ export function FeaturesSection() {
                         </p>
                       </div>
 
-                      {/* 统计数据 */}
-                      {feature.stat && (
-                        <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
-                          <span className="text-sm text-muted-foreground">
-                            {t(feature.stat.labelKey)}
-                          </span>
-                          <span className="text-2xl font-bold tabular-nums">
-                            <NumberTicker value={feature.stat.value} />
-                            <span className="text-muted-foreground text-base ml-0.5">
-                              {feature.stat.suffix}
-                            </span>
-                          </span>
-                        </div>
-                      )}
+                      <div className="mt-auto pt-4 border-t border-border/50">
+                        <span className="inline-flex rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-sm font-medium text-muted-foreground">
+                          {t(feature.tagKey)}
+                        </span>
+                      </div>
                     </div>
                   </MagicCard>
                 </motion.div>

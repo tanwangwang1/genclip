@@ -24,13 +24,14 @@
     "docs": "文档",
     "myCreations": "我的作品",
     "credits": "积分",
-    "settings": "设置"
+    "settings": "设置",
+    "startForFree": "免费开始"
   },
   "Hero": {
     "badge": "核心引擎：Seedance 2.0 与 Seedance 1.5 Pro",
-    "title": "Genclip 电影感 AI 视频生成器，支持文生视频与图生视频",
+    "title": "把任何想法变成电影感视频，只需几分钟。",
     "subtitle": "专为电影感文生视频与图生视频创作打造",
-    "description": "Genclip 基于 Seedance 2.0 与 Seedance 1.5 Pro 工作流，可将文本提示词和图片快速生成电影感 AI 视频。",
+    "description": "输入文本或图片，即可生成电影级短片。由 Seedance 2.0 Pro 驱动。",
     "startCreating": "免费开始创作",
     "viewExamples": "查看示例",
     "demoAriaLabel": "打开 {tag} AI 视频示例",
@@ -105,17 +106,17 @@
     "textToVideo": {
       "title": "文生视频生成器",
       "description": "将详细提示词快速生成电影感 AI 视频，适合广告、短片与社媒内容。",
-      "stat": "生成速度"
+      "stat": "提示词转动态镜头"
     },
     "imageToVideo": {
       "title": "图生视频 AI",
       "description": "让静态图片自然动起来，保持主体风格、构图和镜头观感的一致性。",
-      "stat": "最高分辨率"
+      "stat": "让静态图片动起来"
     },
     "referenceGen": {
       "title": "参考驱动视频生成",
       "description": "用图片或视频参考引导 Genclip，更精准地控制风格、动作与镜头一致性。",
-      "stat": "参考输入"
+      "stat": "控制风格与运动"
     },
     "enhancement": {
       "title": "视频增强",
@@ -157,13 +158,13 @@
         "stat": "平均时间"
       },
       "upload": {
-        "title": "上传参考图片",
+        "title": "上传参考图片（可选）",
         "description": "可选上传参考图，用于约束构图、主体细节或视觉风格。",
         "stat": "支持格式"
       },
       "generate": {
-        "title": "使用 Seedance AI 生成",
-        "description": "Genclip 会通过 Seedance 工作流渲染你的请求，输出电影感 AI 视频。",
+        "title": "使用所选模型生成",
+        "description": "选择 Seedance 2.0 Pro 或 Seedance 1.5 Pro，然后渲染电影感 AI 视频。",
         "stat": "生成时间"
       },
       "download": {

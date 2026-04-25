@@ -99,7 +99,7 @@ export function FAQSection() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <Accordion type="single" collapsible className="space-y-3">
+              <Accordion type="single" collapsible defaultValue="faq-0" className="space-y-3">
                 {faqData.map((item, index) => (
                   <motion.div
                     key={item.questionKey}

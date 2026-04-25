@@ -1440,9 +1440,6 @@ export function VideoGeneratorInput({
 
             {/* Credits & Submit */}
             <div className="flex items-center gap-3">
-              <span className="text-sm text-muted-foreground">
-                {calculatedCredits} {texts.credits}
-              </span>
               <button
                 onClick={handleSubmit}
                 disabled={!canSubmit}
@@ -1459,7 +1456,9 @@ export function VideoGeneratorInput({
                     <span>Generating...</span>
                   </>
                 ) : (
-                  <span>Generate</span>
+                  <span>
+                    Generate <span className="text-primary-foreground/70">· {calculatedCredits} {texts.credits}</span>
+                  </span>
                 )}
               </button>
             </div>

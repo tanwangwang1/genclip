@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Sparkles, Zap, Play } from "lucide-react";
+import { Sparkles, Play } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
@@ -12,11 +12,9 @@ import {
   type SubmitData,
   DEFAULT_CONFIG,
   DEFAULT_DEFAULTS,
-  DEFAULT_PROMPT_TEMPLATES,
 } from "@/components/video-generator";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { Meteors } from "@/components/magicui/meteors";
-import { cn } from "@/components/ui";
 import { authClient } from "@/lib/auth/client";
 import { calculateModelCredits, getAvailableModels } from "@/config/credits";
 import { NEW_USER_GIFT } from "@/config/pricing-user";
@@ -57,18 +55,66 @@ type DemoItem = {
   id: string;
   videoUrl: string;
   prompt: string;
+  displayPrompt: string;
   tag: string;
 };
 
-const DEMO_ITEMS: DemoItem[] = DEFAULT_PROMPT_TEMPLATES
-  .filter((template) => template.previewVideo && template.category && (template.prompt || template.text))
-  .slice(0, 6)
-  .map((template) => ({
-    id: template.id,
-    videoUrl: template.previewVideo!,
-    tag: template.category!,
-    prompt: template.prompt ?? template.text,
-  }));
+const DEMO_ITEMS: DemoItem[] = [
+  {
+    id: "product-showcase",
+    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo005.mp4",
+    tag: "Product Showcase",
+    displayPrompt:
+      "Vertical 9:16 cinematic product ad, 6s. A crystal perfume bottle on wet black stone, slow dolly-in, neon reflections, realistic droplets...",
+    prompt:
+      "Vertical 9:16 cinematic product ad, 6 seconds. A crystal perfume bottle sits on wet black stone, macro-to-medium dolly-in, cool neon reflections, realistic water droplets, elegant glass highlights, premium beauty-ad mood, high contrast, no text, no logo, no hands.",
+  },
+  {
+    id: "dialogue-scene",
+    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo001.mp4",
+    tag: "Dialogue Scene",
+    displayPrompt:
+      "Fixed shot of the man on the right walking up to the man on the left and expressing strong dissatisfaction...",
+    prompt:
+      "Fixed shot of the man on the right side of the frame walking up to the man on the left side of the frame and expressing his strong feelings of dissatisfaction to him.",
+  },
+  {
+    id: "short-film",
+    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo004.mp4",
+    tag: "Short Film",
+    displayPrompt:
+      "A cinematic short film scene with sound design. A young woman stands by a window, golden hour light, slow dolly-in...",
+    prompt:
+      "A cinematic short film scene with sound design. A young woman stands in a dimly lit room by a window, soft golden hour light and moving curtains. The camera slowly dollies in from behind with slight handheld motion. Ambient sound of wind and distant city noise.",
+  },
+  {
+    id: "mythic-cinematic",
+    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo002.mp4",
+    tag: "Mythic Cinematic",
+    displayPrompt:
+      "5-second ultra-cinematic mythic teaser, 16:9. A woman rides a white horse across turquoise sea, half-above and half-underwater...",
+    prompt:
+      "5-second ultra-cinematic mythic teaser, horizontal 16:9. A woman rides a white horse across a clear turquoise sea, with the waterline splitting the world into two dimensions—above and below.\n\nThe opening is a half-above, half-underwater tracking shot, calm and sacred in tone, with realistic splashes and natural sunlight filtering underwater. The camera slowly pushes in with a slight arc as the horse walks steadily forward; the woman, dressed in flowing ivory robes, sits upright with a distant, prophetic presence, wind moving her fabric and earrings.\n\nBrief cut to a close shot: she seems to sense a calling ahead, her eyes lift slightly, and her breath pauses for a moment.\n\nThe camera then widens as the horse continues forward with stronger splashes; the light on the horizon gradually intensifies, as if an unseen gate is opening.\n\nThe final shot pushes into the glow, conveying a sense of divine return and fate awakening. Premium cinematic look, realistic water physics, natural horse motion, subtle mystical atmosphere, no extra characters, no text.",
+  },
+  {
+    id: "action-long-take",
+    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo006.mp4",
+    tag: "Action Long Take",
+    displayPrompt:
+      "Generate a cinematic, large-scale action long take animation. A Chinese youth flies a kite through crowded streets, leaps, flips, and lands...",
+    prompt:
+      "Generate a cinematic, large-scale action long take animation. Theme: A Chinese youth flies a kite through crowded streets, leaps up steps, flips and lands, dashes toward a high platform, and executes a difficult jump. The drumbeat erupts the moment he lands. One single continuous shot throughout, no cuts, fluid movements, clear weight, inertia, and landing cushioning. Style transition: 0–5s: Clear, highly saturated yet controlled Makoto Shinkai style, with moist reflections. 6–10s: Ink wash explosion; background buildings simplified with ink strokes, speed lines in dry-brush splatter style, drumbeats visualized as ink shockwaves. The protagonist and kite must remain clearly defined. 4K video, American military marching band with over 50 members parading on campus, sunny weather. Band in formal dark blue military uniforms with golden epaulets, marching in neat formation. Brass players perform classic military marches, drummers play steady rhythms, conductor leads with a baton. Background: cheering students, American flags, ancient red-brick campus buildings. Camera: dynamic tracking, alternating wide and medium shots, smooth movement. Audio: stereo brass melodies, drumbeats, crowd cheers. Atmosphere: bright, energetic, patriotic, warm sunlight tones.",
+  },
+  {
+    id: "gothic-fantasy",
+    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo003.mp4",
+    tag: "Gothic Fantasy",
+    displayPrompt:
+      "Use the first reference image as the opening frame and the second as the ending frame. Same woman throughout, cold gothic identity...",
+    prompt:
+      "Use the first reference image as the exact opening frame and the second reference image as the exact ending frame. Same woman throughout, same face, same platinum-white hair, same cold gothic identity, no identity drift. Create a 5-second vertical cinematic gothic fantasy teaser. A hidden woman in a dark stone chamber senses an ancient bloodline calling her, awakens with refined icy-white energy, and transitions into a snowy castle arrival as her true sovereign self. 0-1s: exact first frame, close side-profile in dark rocky space, almost still, slow push-in, slight eye movement, a strand of hair lifted by cold wind. 1-2s: subtle recognition, faint cold white glow along neck and collar, ancient runes softly appear on stone walls, dust begins to suspend. 2-3s: elegant bloodline awakening, icy-white veins of light across neck and shoulders, particles rise upward, hair lifts, eyes become sharp and regal, camera arcs toward a more frontal angle. 3-4s: cold white fate-like transition, cave dissolves into snow and mist, dust becomes snowflakes, gothic castle silhouette emerges, she takes one calm decisive step forward. 4-5s: exact final frame, she stands front-facing before the snowy castle, black long coat silhouette, wind in hair, majestic stillness, end like a movie-poster reveal. Style: ultra cinematic, dark gothic fantasy, cold blue-gray tones, realistic skin and hair, elegant aristocratic mood, subtle snow, soft mist, premium restrained magic. Avoid combat, fire, sci-fi portal, chaotic motion, exaggerated acting, identity drift, extra limbs, cartoon look, cheap effects.",
+  },
+];
 
 function normalizeGeneratorMode(mode?: string): GenerationMode {
   if (mode === "image-to-video" || mode === "i2v") {
@@ -138,6 +184,7 @@ export function HeroSection({ currentProvider }: HeroSectionProps) {
       ...DEFAULT_CONFIG,
       videoModels: filteredVideoModels,
       videoModes: filteredVideoModes,
+      promptTemplates: [],
     };
   }, [currentProvider]);
 
@@ -444,28 +491,6 @@ export function HeroSection({ currentProvider }: HeroSectionProps) {
             )}
           </motion.div>
 
-          {/* 特性标签 */}
-          <BlurFade delay={0.32} inView className="flex flex-wrap justify-center gap-3">
-            {[
-              { icon: Zap, label: t("features.fast"), color: "text-yellow-500" },
-              { icon: Play, label: t("features.easy"), color: "text-primary" },
-              { icon: Sparkles, label: t("features.ai"), color: "text-primary" },
-            ].map((feature, idx) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={feature.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.38 + idx * 0.1 }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black/35 backdrop-blur-md border border-white/20 text-white"
-                >
-                  <Icon className={cn("h-4 w-4", feature.color)} />
-                  <span className="text-sm font-medium">{feature.label}</span>
-                </motion.div>
-              );
-            })}
-          </BlurFade>
         </div>
       </div>
       </div>
@@ -511,7 +536,7 @@ export function HeroSection({ currentProvider }: HeroSectionProps) {
                   </span>
                 </div>
                 <div className="absolute left-3 right-3 bottom-3 rounded-lg bg-black/75 border border-white/20 p-2.5 text-[11px] leading-4 text-white/95 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                  <p className="line-clamp-4">{demo.prompt}</p>
+                  <p className="line-clamp-3">{demo.displayPrompt}</p>
                 </div>
               </button>
             ))}

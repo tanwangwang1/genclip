@@ -24,13 +24,14 @@
     "docs": "Docs",
     "myCreations": "My Creations",
     "credits": "Credits",
-    "settings": "Settings"
+    "settings": "Settings",
+    "startForFree": "Start for Free"
   },
   "Hero": {
     "badge": "Powered by Seedance 2.0 & Seedance 1.5 Pro",
-    "title": "Genclip AI Video Generator for Cinematic Text & Image to Video",
+    "title": "Turn any idea into a cinematic video — in minutes.",
     "subtitle": "for cinematic text-to-video and image-to-video creation",
-    "description": "Genclip turns text prompts and images into cinematic AI videos in minutes with Seedance 2.0 and Seedance 1.5 Pro workflows.",
+    "description": "Text or image in, film-quality clips out. Powered by Seedance 2.0 Pro.",
     "startCreating": "Start Creating Free",
     "viewExamples": "View Examples",
     "demoAriaLabel": "Open the {tag} AI video example",
@@ -105,17 +106,17 @@
     "textToVideo": {
       "title": "Text to Video Generator",
       "description": "Turn detailed prompts into cinematic AI videos with fast, studio-style results.",
-      "stat": "Generation speed"
+      "stat": "Prompt to motion"
     },
     "imageToVideo": {
       "title": "Image to Video AI",
       "description": "Animate still images into polished motion clips with consistent style and composition.",
-      "stat": "Max resolution"
+      "stat": "Animate stills"
     },
     "referenceGen": {
       "title": "Reference-Based Video Generation",
       "description": "Guide Genclip with image or video references for better style, motion, and shot consistency.",
-      "stat": "Reference inputs"
+      "stat": "Guide style and motion"
     },
     "enhancement": {
       "title": "Video Enhancement",
@@ -157,13 +158,13 @@
         "stat": "Average time"
       },
       "upload": {
-        "title": "Upload a Reference Image",
+        "title": "Upload a Reference Image (Optional)",
         "description": "Add an optional image reference to guide composition, style, or subject details.",
         "stat": "Formats supported"
       },
       "generate": {
-        "title": "Generate with Seedance AI",
-        "description": "Genclip runs your request through Seedance workflows to render a cinematic AI video.",
+        "title": "Generate with Your Chosen Model",
+        "description": "Choose Seedance 2.0 Pro or Seedance 1.5 Pro, then render a cinematic AI video.",
         "stat": "Generation time"
       },
       "download": {

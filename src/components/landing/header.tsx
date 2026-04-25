@@ -289,7 +289,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
                   {t('Common.login')}
                 </Button>
                 <Button asChild variant="default" size="sm">
-                  <LocaleLink href="/register">{t('Common.signup')}</LocaleLink>
+                  <LocaleLink href="/register">{t('Header.startForFree')}</LocaleLink>
                 </Button>
               </div>
             )}
@@ -459,7 +459,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
                         {t('Common.login')}
                       </Button>
                       <Button asChild>
-                        <LocaleLink href="/register">{t('Common.signup')}</LocaleLink>
+                        <LocaleLink href="/register">{t('Header.startForFree')}</LocaleLink>
                       </Button>
                     </div>
                   )}
