@@ -12,6 +12,7 @@ import {
   type SubmitData,
   DEFAULT_CONFIG,
   DEFAULT_DEFAULTS,
+  DEFAULT_PROMPT_TEMPLATES,
 } from "@/components/video-generator";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { Meteors } from "@/components/magicui/meteors";
@@ -59,50 +60,15 @@ type DemoItem = {
   tag: string;
 };
 
-const DEMO_ITEMS: DemoItem[] = [
-  {
-    id: "demo001",
-    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo001.mp4",
-    tag: "Dialogue Scene",
-    prompt:
-      "Fixed shot of the man on the right side of the frame walking up to the man on the left side of the frame and expressing his strong feelings of dissatisfaction to him.",
-  },
-  {
-    id: "demo002",
-    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo002.mp4",
-    tag: "Mythic Cinematic",
-    prompt:
-      "5-second ultra-cinematic mythic teaser, horizontal 16:9. A woman rides a white horse across a clear turquoise sea, with the waterline splitting the world into two dimensions—above and below. The opening is a half-above, half-underwater tracking shot, calm and sacred in tone, with realistic splashes and natural sunlight filtering underwater. The camera slowly pushes in with a slight arc as the horse walks steadily forward; the woman, dressed in flowing ivory robes, sits upright with a distant, prophetic presence, wind moving her fabric and earrings. Brief cut to a close shot: she seems to sense a calling ahead, her eyes lift slightly, and her breath pauses for a moment. The camera then widens as the horse continues forward with stronger splashes; the light on the horizon gradually intensifies, as if an unseen gate is opening. The final shot pushes into the glow, conveying a sense of divine return and fate awakening. Premium cinematic look, realistic water physics, natural horse motion, subtle mystical atmosphere, no extra characters, no text.",
-  },
-  {
-    id: "demo003",
-    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo003.mp4",
-    tag: "Gothic Fantasy",
-    prompt:
-      "Create a 5-second vertical cinematic gothic fantasy teaser. A hidden woman in a dark stone chamber senses an ancient bloodline calling her, awakens with refined icy-white energy, and transitions into a snowy castle arrival as her true sovereign self. 0-1s: exact first frame, close side-profile in dark rocky space, almost still, slow push-in, slight eye movement, a strand of hair lifted by cold wind. 1-2s: subtle recognition, faint cold white glow along neck and collar, ancient runes softly appear on stone walls, dust begins to suspend. 2-3s: elegant bloodline awakening, icy-white veins of light across neck and shoulders, particles rise upward, hair lifts, eyes become sharp and regal, camera arcs toward a more frontal angle. 3-4s: cold white fate-like transition, cave dissolves into snow and mist, dust becomes snowflakes, gothic castle silhouette emerges, she takes one calm decisive step forward. 4-5s: exact final frame, she stands front-facing before the snowy castle, black long coat silhouette, wind in hair, majestic stillness, end like a movie-poster reveal. Style: ultra cinematic, dark gothic fantasy, cold blue-gray tones, realistic skin and hair, elegant aristocratic mood, subtle snow, soft mist, premium restrained magic. Avoid combat, fire, sci-fi portal, chaotic motion, exaggerated acting, identity drift, extra limbs, cartoon look, cheap effects.",
-  },
-  {
-    id: "demo004",
-    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo004.mp4",
-    tag: "Short Film",
-    prompt:
-      "A cinematic short film scene with sound design. A young woman stands in a dimly lit room by a window, soft golden hour light and moving curtains. The camera slowly dollies in from behind with slight handheld motion. Ambient sound of wind and distant city noise.",
-  },
-  {
-    id: "demo005",
-    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo005.mp4",
-    tag: "Product Ad",
-    prompt:
-      "Vertical 9:16 premium beauty-ad style, 6 seconds. Macro-to-medium cinematic reveal of a crystal perfume bottle on wet black stone. Start with tiny water droplets and soft neon reflections; the camera glides right while focus racks from foreground droplets to the bottle logo. At 2-4s, a gentle splash ring expands around the base, mist rises, and cool blue light pulses subtly. Final 2 seconds: slow push-in, elegant highlight streak across the glass, product stays perfectly centered and sharp. Ultra-clean composition, realistic liquid physics, high contrast, no text, no extra objects, no hands.",
-  },
-  {
-    id: "demo006",
-    videoUrl: "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo006.mp4",
-    tag: "Travel Teaser",
-    prompt:
-      "8-second cinematic travel teaser, 16:9. Dawn in an ancient mountain town after rain. Opening wide shot: layered rooftops, drifting fog, warm sunlight cutting through clouds. Camera performs a smooth drone-like forward glide, then transitions to street-level tracking past glowing lanterns and reflective puddles. Mid shot: a lone traveler in a long coat pauses at a stone bridge, looks toward the sunlit valley. Final shot: camera rises above the bridge to reveal the entire town and distant peaks, ending on a calm heroic silhouette. Realistic atmosphere, natural motion, soft volumetric light, subtle lens bloom, no text, no logos, no extra crowds.",
-  },
-];
+const DEMO_ITEMS: DemoItem[] = DEFAULT_PROMPT_TEMPLATES
+  .filter((template) => template.previewVideo && template.category && (template.prompt || template.text))
+  .slice(0, 6)
+  .map((template) => ({
+    id: template.id,
+    videoUrl: template.previewVideo!,
+    tag: template.category!,
+    prompt: template.prompt ?? template.text,
+  }));
 
 function normalizeGeneratorMode(mode?: string): GenerationMode {
   if (mode === "image-to-video" || mode === "i2v") {
@@ -394,6 +360,7 @@ export function HeroSection({ currentProvider }: HeroSectionProps) {
             loop
             playsInline
             preload="metadata"
+            aria-hidden="true"
           />
           <div className="absolute inset-0 bg-black/45" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/30 to-background/80" />
@@ -521,7 +488,7 @@ export function HeroSection({ currentProvider }: HeroSectionProps) {
                   setPreviewVideoUrl(demo.videoUrl);
                 }}
                 className="group relative h-full aspect-video rounded-2xl overflow-hidden border border-border/60 bg-card text-left"
-                aria-label={`Preview demo video ${index + 1}`}
+                aria-label={t("demoAriaLabel", { tag: demo.tag })}
               >
                 <video
                   src={demo.videoUrl}
@@ -574,9 +541,9 @@ export function HeroSection({ currentProvider }: HeroSectionProps) {
         }}
       >
         <DialogContent className="max-w-5xl w-[95vw] p-1 bg-black border-border">
-          <DialogTitle className="sr-only">Demo video preview</DialogTitle>
+          <DialogTitle className="sr-only">{t("demoDialogTitle")}</DialogTitle>
           <DialogDescription className="sr-only">
-            Enlarged preview of the selected demo video.
+            {t("demoDialogDescription")}
           </DialogDescription>
           {previewVideoUrl && (
             <video

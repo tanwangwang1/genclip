@@ -242,9 +242,9 @@ export function FeaturesSection() {
                       </div>
 
                       {/* 标题 */}
-                      <h4 className="text-lg font-semibold mb-1.5">
+                      <h3 className="text-lg font-semibold mb-1.5">
                         {t(benefit.titleKey)}
-                      </h4>
+                      </h3>
 
                       {/* 描述 */}
                       <p className="text-sm text-muted-foreground leading-relaxed">

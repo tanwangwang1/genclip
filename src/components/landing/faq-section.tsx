@@ -112,12 +112,15 @@ export function FAQSection() {
                       value={`faq-${index}`}
                       className="px-6 rounded-2xl border border-border bg-background/50 backdrop-blur-sm hover:border-primary/30 transition-colors"
                     >
-                      <AccordionTrigger className="text-left hover:no-underline cursor-pointer py-4">
+                      <AccordionTrigger
+                        headingLevel={3}
+                        className="text-left hover:no-underline cursor-pointer py-4"
+                      >
                         <span className="flex items-center gap-3">
                           <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-semibold">
                             {index + 1}
                           </span>
-                          <span className="font-medium">{t(item.questionKey)}</span>
+                          <span className="font-medium text-base">{t(item.questionKey)}</span>
                         </span>
                       </AccordionTrigger>
                       <AccordionContent className="pl-10 text-muted-foreground leading-relaxed">

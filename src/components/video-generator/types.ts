@@ -355,12 +355,30 @@ export interface ImageStyle {
 export interface PromptTemplate {
   /** Unique identifier */
   id: string;
-  /** Prompt text */
+  /** Display title */
   text: string;
-  /** Thumbnail image URL (optional) */
+  /** Prompt text applied on quick use (optional, falls back to text) */
+  prompt?: string;
+  /** Expanded prompt text for remix / advanced mode (optional) */
+  advancedPrompt?: string;
+  /** Thumbnail image URL used as a reference upload (optional) */
   image?: string;
+  /** Visual thumbnail for cards (optional) */
+  thumbnail?: string;
+  /** Preview video URL for showcase cards (optional) */
+  previewVideo?: string;
   /** Category for grouping (optional) */
   category?: string;
+  /** Model badge label (optional) */
+  modelLabel?: string;
+  /** Suggested aspect ratio preset (optional) */
+  aspectRatio?: string;
+  /** Suggested duration preset (optional) */
+  duration?: string;
+  /** Suggested resolution preset (optional) */
+  resolution?: string;
+  /** Suggested video model preset (optional) */
+  videoModel?: string;
 }
 
 /**

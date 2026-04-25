@@ -24,9 +24,13 @@ import { NEW_USER_GIFT } from "@/config/pricing-user";
 const benefits = [
   { icon: Check, labelKey: "benefits.free", color: "text-green-500" },
   { icon: Check, labelKey: "benefits.noCard", color: "text-green-500" },
-  { icon: Check, labelKey: "benefits.cancel", color: "text-green-500" },
-  { icon: Check, labelKey: "benefits.support", color: "text-green-500" },
+  { icon: Check, labelKey: "benefits.commercial", color: "text-green-500" },
+  { icon: Check, labelKey: "benefits.hd", color: "text-green-500" },
+  { icon: Check, labelKey: "benefits.speed", color: "text-green-500" },
 ];
+
+const CTA_PREVIEW_VIDEO_URL =
+  "https://pub-e1329f4655cd4d258499ca10df0b5753.r2.dev/videos/demo/demo005.mp4";
 
 export function CTASection() {
   const t = useTranslations("CTA");
@@ -64,7 +68,7 @@ export function CTASection() {
 
               <div className="grid md:grid-cols-2 gap-8 p-8 md:p-12">
                 {/* 左侧: 内容 */}
-                <div className="space-y-6">
+                  <div className="space-y-6">
                   {/* 徽章 */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -122,7 +126,7 @@ export function CTASection() {
                         background="oklch(from var(--primary) l c h)"
                         className="px-8 py-3 text-base font-medium shadow-lg shadow-primary/25"
                       >
-                        {t("getStarted")}
+                        {t("getStarted", { credits: NEW_USER_GIFT.credits })}
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </ShimmerButton>
                     </LocaleLink>
@@ -169,28 +173,36 @@ export function CTASection() {
 
                   {/* 视频预览卡片 */}
                   <div className="relative rounded-2xl border border-border dark:border-white/10 bg-muted dark:bg-black/30 backdrop-blur-sm overflow-hidden">
-                    {/* 静态图片预览 (Video preview replaced with image for audit) */}
-                    <div className="aspect-video bg-muted/80 flex items-center justify-center overflow-hidden">
-                      <motion.img
-                        src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80"
-                        alt="AI Video Generation Preview"
-                        className="w-full h-full object-cover"
+                    <div className="relative aspect-video bg-muted/80 overflow-hidden">
+                      <motion.video
+                        src={CTA_PREVIEW_VIDEO_URL}
+                        aria-label={t("previewAlt")}
+                        className="h-full w-full object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.5 }}
                       />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
+                      <div className="absolute left-3 top-3">
+                        <span className="rounded-full border border-white/20 bg-black/55 px-2.5 py-1 text-[11px] font-medium text-white">
+                          {t("previewDemoLabel")}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* 模拟进度条 - 保持不动或移除动画 */}
-                    <div className="p-4 space-y-3">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">{t("generating")}</span>
-                        <span className="font-medium text-primary">100%</span>
-                      </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div className="h-full w-full" style={{ backgroundImage: "linear-gradient(to right, oklch(from var(--primary) l c h), oklch(from var(--primary) l c calc(h + 40)))" }} />
+                    <div className="p-4 space-y-3 border-t border-border/60 bg-background/40">
+                      <div className="flex items-center justify-between gap-3 text-sm">
+                        <span className="text-muted-foreground">{t("previewLabel")}</span>
+                        <span className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+                          {t("previewValue")}
+                        </span>
                       </div>
                       <p className="text-xs text-muted-foreground text-center">
-                        {t("readyIn")} 2-5 {t("minutes")}
+                        {t("previewCaption")}
                       </p>
                     </div>
                   </div>

@@ -1,14 +1,13 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/components/ui";
 import { LocaleLink } from "@/i18n/navigation";
 
 export function LandingFooter() {
   const t = useTranslations('Footer');
-  const locale = useLocale();
   const currentYear = new Date().getFullYear();
 
   const footerSections = [
@@ -56,16 +55,16 @@ export function LandingFooter() {
               🎬 Genclip
             </LocaleLink>
             <p className="text-sm text-muted-foreground mb-4">
-              Transform your ideas into stunning videos with AI.
+              {t('description')}
             </p>
           </div>
 
           {/* Footer Links */}
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h3 className="text-sm font-semibold text-foreground mb-4">
+              <p className="text-sm font-semibold text-foreground mb-4">
                 {section.title}
-              </h3>
+              </p>
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.title}>

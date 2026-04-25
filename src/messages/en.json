@@ -28,11 +28,14 @@
   },
   "Hero": {
     "badge": "Powered by Seedance 2.0 & Seedance 1.5 Pro",
-    "title": "Cinematic Video Creation, Reimagined",
-    "subtitle": "for Visionary Creators",
-    "description": "Produce studio-grade AI videos in minutes - from text and image prompts to polished, high-fidelity motion.",
+    "title": "Genclip AI Video Generator for Cinematic Text & Image to Video",
+    "subtitle": "for cinematic text-to-video and image-to-video creation",
+    "description": "Genclip turns text prompts and images into cinematic AI videos in minutes with Seedance 2.0 and Seedance 1.5 Pro workflows.",
     "startCreating": "Start Creating Free",
     "viewExamples": "View Examples",
+    "demoAriaLabel": "Open the {tag} AI video example",
+    "demoDialogTitle": "Genclip demo video preview",
+    "demoDialogDescription": "Enlarged preview of the selected Genclip AI video example.",
     "features": {
       "fast": "Lightning Fast",
       "easy": "Easy to Use",
@@ -91,27 +94,27 @@
   },
   "Features": {
     "badge": "Powerful Features",
-    "title": "Precision Creative Suite",
-    "subtitle": "Enterprise-grade capabilities for cinematic output",
-    "description": "A refined toolkit built for high-fidelity video generation, control, and production-ready workflows.",
+    "title": "Powerful AI Video Generation Tools",
+    "subtitle": "for Cinematic Text-to-Video, Image-to-Video, and Creative Control",
+    "description": "Genclip gives creators a focused AI video toolkit for fast prompting, image animation, and reference-guided cinematic generation.",
     "learnMore": "Learn more",
     "bottomCTA": {
       "text": "Ready to transform your ideas into videos?",
       "button": "Start Creating Now"
     },
     "textToVideo": {
-      "title": "Text to Video",
-      "description": "Transform your text prompts into stunning videos using advanced AI models",
+      "title": "Text to Video Generator",
+      "description": "Turn detailed prompts into cinematic AI videos with fast, studio-style results.",
       "stat": "Generation speed"
     },
     "imageToVideo": {
-      "title": "Image to Video",
-      "description": "Animate your images and bring them to life with AI video generation",
+      "title": "Image to Video AI",
+      "description": "Animate still images into polished motion clips with consistent style and composition.",
       "stat": "Max resolution"
     },
     "referenceGen": {
-      "title": "Reference Generation",
-      "description": "Upload images or videos as references to guide AI generation. Extract camera paths, motion patterns, and styles for precise control",
+      "title": "Reference-Based Video Generation",
+      "description": "Guide Genclip with image or video references for better style, motion, and shot consistency.",
       "stat": "Reference inputs"
     },
     "enhancement": {
@@ -142,50 +145,53 @@
   },
   "HowItWorks": {
     "badge": "Simple Process",
-    "title": "How It Works",
-    "subtitle": "Create your video in 4 simple steps",
-    "description": "Get started in minutes with our intuitive video creation workflow",
+    "title": "How Genclip Works",
+    "subtitle": "Create AI videos in 4 simple steps",
+    "description": "Go from prompt to finished clip with a fast workflow built for text-to-video and image-to-video creation.",
     "bottomHint": "No credit card required • {credits} free credits to start",
     "cta": "Start Creating Now",
     "steps": {
       "prompt": {
-        "title": "Describe Your Video",
-        "description": "Enter a detailed text prompt describing the video you want to create",
+        "title": "Describe Your Video Prompt",
+        "description": "Write the scene, mood, camera motion, and style you want Genclip to generate.",
         "stat": "Average time"
       },
       "upload": {
-        "title": "Upload Reference",
-        "description": "Optionally add a reference image to guide the AI (optional)",
+        "title": "Upload a Reference Image",
+        "description": "Add an optional image reference to guide composition, style, or subject details.",
         "stat": "Formats supported"
       },
       "generate": {
-        "title": "AI Generates",
-        "description": "Our AI processes your request and creates a unique video",
+        "title": "Generate with Seedance AI",
+        "description": "Genclip runs your request through Seedance workflows to render a cinematic AI video.",
         "stat": "Generation time"
       },
       "download": {
-        "title": "Download & Share",
-        "description": "Get your HD video and share it anywhere you want",
+        "title": "Download & Share in HD",
+        "description": "Export your finished video and publish it across social, ads, and client work.",
         "stat": "Max quality"
       }
     }
   },
   "CTA": {
-    "badge": "Limited Time Offer",
-    "title": "Ready to Create Amazing Videos?",
-    "subtitle": "Join thousands of creators already using Genclip",
-    "description": "Start creating professional videos today with our free trial",
-    "getStarted": "Get Started Free",
+    "badge": "Start for Free",
+    "title": "Ready to Create Cinematic Videos?",
+    "subtitle": "Join a growing community of creators using Genclip",
+    "description": "Turn your first prompt into video today - no credit card, no watermark.",
+    "getStarted": "Claim {credits} Free Credits",
     "learnMore": "Learn More",
+    "previewAlt": "Genclip AI video generation preview showing a cinematic text-to-video result",
+    "previewDemoLabel": "Product Showcase Demo",
     "benefits": {
       "free": "{credits} free credits to start",
       "noCard": "No credit card required",
-      "cancel": "Cancel anytime",
-      "support": "24/7 customer support"
+      "commercial": "Commercial use included",
+      "hd": "HD 1080p output",
+      "speed": "Your first video in under 5 minutes"
     },
-    "generating": "Generating...",
-    "readyIn": "Ready in",
-    "minutes": "minutes",
+    "previewLabel": "Sample cinematic output",
+    "previewValue": "Seedance-powered",
+    "previewCaption": "See the output style first, then claim your free credits and generate your own video.",
     "from": "from",
     "reviews": "reviews",
     "testimonials": {
@@ -194,38 +200,39 @@
     }
   },
   "FAQ": {
-    "title": "Frequently Asked Questions",
-    "subtitle": "Everything you need to know about Genclip",
+    "title": "Genclip FAQ",
+    "subtitle": "Answers about AI video generation, models, credits, and refunds",
     "contact": "Still have questions? Contact us at",
     "general": {
-      "question": "What is Genclip?",
-      "answer": "Genclip is a cutting-edge AI video generation platform that allows you to transform text and images into high-quality videos in minutes. Powered by advanced models like Sora 2 and Veo 3.1, it enables creators to bring their visions to life without expensive equipment."
+      "question": "What is Genclip and how does AI video generation work?",
+      "answer": "Genclip is an AI video generator that turns text prompts and images into cinematic videos. You describe a scene, optionally add a reference image, choose a model, and Genclip renders the final video in minutes."
     },
     "commercial": {
-      "question": "Can I use the videos for commercial purposes?",
-      "answer": "Yes! Videos generated with our Pro and Team plans come with a full commercial license, allowing you to use them in your marketing, social media, and commercial projects."
+      "question": "Can I use Genclip AI videos commercially?",
+      "answer": "Yes. Paid Genclip plans include commercial usage rights for generated videos, so you can use them in marketing, client work, social content, and business campaigns."
     },
     "aiModels": {
-      "question": "Which AI models do you use?",
-      "answer": "We integrate the industry's best video generation models, including Sora 2, Veo 3.1, and others. We continuously update our platform to include the latest and most capable models available."
+      "question": "Which AI models power Genclip?",
+      "answer": "Genclip currently focuses on Seedance 2.0 and Seedance 1.5 Pro workflows for cinematic text-to-video and image-to-video creation, with model options and credit usage shown directly in the generator."
     },
     "credits": {
-      "question": "How does the credit system work?",
-      "answer": "You use credits to generate videos. Different models and video durations consume different amounts of credits. You can purchase credit packs or subscribe to a monthly plan to receive a steady supply of credits at a discount."
+      "question": "How does the Genclip credit system work?",
+      "answer": "Genclip uses credits for every generation. Credit usage depends on the model, duration, and output settings. You can buy one-time credit packs or subscribe for recurring credits and better value."
     },
     "refund": {
-      "question": "Do you offer refunds?",
-      "answer": "We offer a satisfaction guarantee. If a generated video fails due to a system error, we will refund the credits. For subscription payments, please contact our support team within 7 days if you're not satisfied."
+      "question": "Does Genclip offer refunds?",
+      "answer": "If a generation fails because of a system issue, Genclip can refund the credits. For subscription billing questions, review our Refund Policy or contact support within the eligible refund window."
     },
     "support": {
-      "question": "How can I get support?",
-      "answer": "Our dedicated support team is available 24/7. You can reach us via the contact form on our website or by emailing support@genclip.studio."
+      "question": "How do I contact Genclip support?",
+      "answer": "You can reach the Genclip support team anytime at support@genclip.studio. We help with billing, credits, account access, and video generation issues."
     }
   },
   "Footer": {
     "product": "Product",
     "company": "Company",
     "legal": "Legal",
+    "description": "Genclip is an AI video generator for cinematic text-to-video and image-to-video creation.",
     "copyright": "© {year} Genclip. All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
@@ -292,8 +299,8 @@
     }
   },
   "PricingCards": {
-    "pricing": "Pricing",
-    "slogan": "Simple, transparent pricing",
+    "pricing": "Genclip Pricing & Credits",
+    "slogan": "Flexible plans for AI video creation",
     "onetime": "One-time",
     "monthly": "Monthly",
     "yearly": "Yearly",

@@ -37,6 +37,7 @@ export interface SiteConfig {
   description: string;
   url: string;
   ogImage: string;
+  twitterImage: string;
   links: {
     github: string;
   };

@@ -9,8 +9,9 @@ import { CTASection } from "@/components/landing/cta-section";
 import type { Locale } from "@/config/i18n-config";
 import { siteConfig } from "@/config/site";
 import { i18n } from "@/config/i18n-config";
-import { buildAlternates, resolveOgImage } from "@/lib/seo";
+import { buildAlternates, resolveOgImage, resolveTwitterImage } from "@/lib/seo";
 import { getConfiguredAIProvider } from "@/ai";
+import { NEW_USER_GIFT } from "@/config/pricing-user";
 
 interface HomePageProps {
   params: Promise<{
@@ -28,40 +29,89 @@ export async function generateMetadata({ params }: PageMetadataProps) {
   const { locale } = await params;
 
   const titles = {
-    en: "AI Video Generator - Create Stunning Videos with Sora 2 & Veo 3.1",
-    zh: "AI视频生成器 - 使用Sora 2和Veo 3.1创建精彩视频",
+    en: "Cinematic AI Video Generator for Text & Images",
+    zh: "电影感 AI 视频生成器，支持文生视频与图生视频",
   };
 
   const descriptions = {
-    en: "Transform your ideas into stunning videos with AI. Access Sora 2, Veo 3.1, Wan 2.6, and more. Fast, easy, and professional quality video generation in minutes. Start creating today!",
-    zh: "用AI将您的想法转化为精彩视频。访问Sora 2、Veo 3.1、Wan 2.6等模型。快速、简单、专业品质的视频生成，几分钟内完成。立即开始创作！",
+    en: `Genclip is an AI video generator for cinematic text-to-video and image-to-video creation. Powered by Seedance 2.0 and 1.5 Pro. Start free with ${NEW_USER_GIFT.credits} credits.`,
+    zh: `Genclip 是一款电影感 AI 视频生成器，支持文生视频与图生视频，由 Seedance 2.0 和 1.5 Pro 驱动，注册即可获得 ${NEW_USER_GIFT.credits} 个免费积分。`,
+  };
+  const keywords = {
+    en: [
+      "Genclip",
+      "AI video generator",
+      "text to video AI",
+      "image to video generator",
+      "cinematic AI videos",
+      "Seedance 2.0",
+      "Seedance 1.5 Pro",
+    ],
+    zh: [
+      "Genclip",
+      "AI 视频生成器",
+      "文生视频",
+      "图生视频",
+      "电影感 AI 视频",
+      "Seedance 2.0",
+      "Seedance 1.5 Pro",
+    ],
   };
 
   const canonicalUrl = `${siteConfig.url}${locale === i18n.defaultLocale ? "" : `/${locale}`}`;
   const alternates = buildAlternates("/", locale);
   const ogImage = resolveOgImage();
+  const twitterImage = resolveTwitterImage();
+  const pageTitle = titles[locale] || titles.en;
+  const pageDescription = descriptions[locale] || descriptions.en;
+  const pageKeywords = keywords[locale] || keywords.en;
+  const socialTitles = {
+    en: "Genclip - AI Video Generator for Cinematic Text & Image to Video",
+    zh: "Genclip - 电影感 AI 视频生成器，支持文生视频与图生视频",
+  };
+  const socialDescriptions = {
+    en: `Turn text prompts and images into cinematic AI videos with Genclip. Powered by Seedance 2.0 and 1.5 Pro. Start free with ${NEW_USER_GIFT.credits} credits.`,
+    zh: `用 Genclip 将文本提示词和图片快速生成电影感 AI 视频，由 Seedance 2.0 与 1.5 Pro 驱动，注册即可获得 ${NEW_USER_GIFT.credits} 个免费积分。`,
+  };
+  const socialTitle = socialTitles[locale] || socialTitles.en;
+  const socialDescription = socialDescriptions[locale] || socialDescriptions.en;
 
   return {
-    title: titles[locale] || titles.en,
-    description: descriptions[locale] || descriptions.en,
+    title: pageTitle,
+    description: pageDescription,
+    keywords: pageKeywords,
     alternates: {
       canonical: alternates.canonical,
       languages: alternates.languages,
     },
     openGraph: {
-      title: titles[locale] || titles.en,
-      description: descriptions[locale] || descriptions.en,
+      title: socialTitle,
+      description: socialDescription,
       url: canonicalUrl,
       siteName: siteConfig.name,
       locale: locale === "zh" ? "zh_CN" : "en_US",
       type: "website",
-      images: ogImage ? [ogImage] : undefined,
+      images: ogImage
+        ? [
+            {
+              url: ogImage,
+              alt: locale === "zh" ? "Genclip 首页 Open Graph 分享图" : "Genclip homepage Open Graph preview",
+            },
+          ]
+        : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: titles[locale] || titles.en,
-      description: descriptions[locale] || descriptions.en,
-      images: ogImage ? [ogImage] : undefined,
+      title: socialTitle,
+      description: socialDescription,
+      images: twitterImage
+        ? [
+            {
+              url: twitterImage,
+              alt: locale === "zh" ? "Genclip 首页 Twitter 分享图" : "Genclip homepage Twitter card preview",
+            },
+          ]
+        : undefined,
     },
   };
 }

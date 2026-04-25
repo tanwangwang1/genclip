@@ -32,3 +32,8 @@ export function resolveOgImage(fallback?: string): string | undefined {
   const ogImage = siteConfig.ogImage || fallback;
   return ogImage || undefined;
 }
+
+export function resolveTwitterImage(fallback?: string): string | undefined {
+  const twitterImage = siteConfig.twitterImage || fallback;
+  return twitterImage || undefined;
+}

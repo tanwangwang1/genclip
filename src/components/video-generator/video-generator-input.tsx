@@ -48,6 +48,11 @@ import {
   Loader2,
   MoreHorizontal,
   Volume2,
+  ShoppingBag,
+  Megaphone,
+  Clapperboard,
+  UserRound,
+  House,
 } from "lucide-react";
 import { cn } from "@/components/ui";
 import { BorderBeam } from "@/components/magicui/border-beam";
@@ -210,9 +215,15 @@ export function VideoGeneratorInput({
   );
 
   // Prompt templates state
-  const [visibleTemplates, setVisibleTemplates] = useState<PromptTemplate[]>(
-    promptTemplates.slice(0, 5)
+  const hasFeaturedPromptCards = promptTemplates.some(
+    (template) => template.previewVideo || template.advancedPrompt || template.modelLabel
   );
+  const maxVisibleTemplates = hasFeaturedPromptCards ? 6 : 5;
+  const [visibleTemplates, setVisibleTemplates] = useState<PromptTemplate[]>(
+    promptTemplates.slice(0, maxVisibleTemplates)
+  );
+  const [expandedTemplateId, setExpandedTemplateId] = useState<string | null>(null);
+  const [activeTemplateId, setActiveTemplateId] = useState<string | null>(null);
   const lastDefaultsPromptRef = useRef(defaults.prompt);
 
   // Auto-set generation type when only one type has models
@@ -235,6 +246,10 @@ export function VideoGeneratorInput({
     onPromptChange?.(defaults.prompt);
     onChange?.({ prompt: defaults.prompt });
   }, [defaults.prompt, onPromptChange, onChange]);
+
+  useEffect(() => {
+    setVisibleTemplates(promptTemplates.slice(0, maxVisibleTemplates));
+  }, [promptTemplates, maxVisibleTemplates]);
 
   // Reset duration when model changes if current duration is not supported
   useEffect(() => {
@@ -268,6 +283,10 @@ export function VideoGeneratorInput({
 
   const currentMode = generationType === "video" ? selectedVideoMode : selectedImageMode;
   const currentModes = generationType === "video" ? videoModes : imageModes;
+  const activeTemplate = useMemo(
+    () => promptTemplates.find((template) => template.id === activeTemplateId) ?? null,
+    [promptTemplates, activeTemplateId]
+  );
 
   // Filter models based on current mode's supportedModels
   const availableVideoModels = useMemo(() => {
@@ -784,14 +803,64 @@ export function VideoGeneratorInput({
   };
 
   const refreshSuggestions = useCallback(() => {
+    if (hasFeaturedPromptCards) {
+      setVisibleTemplates(promptTemplates.slice(0, maxVisibleTemplates));
+      return;
+    }
     const shuffled = [...promptTemplates].sort(() => Math.random() - 0.5);
-    setVisibleTemplates(shuffled.slice(0, 5));
-  }, [promptTemplates]);
+    setVisibleTemplates(shuffled.slice(0, maxVisibleTemplates));
+  }, [promptTemplates, hasFeaturedPromptCards, maxVisibleTemplates]);
 
-  const handlePromptSuggestion = async (template: PromptTemplate) => {
-    setPrompt(template.text);
-    onPromptChange?.(template.text);
-    onChange?.({ prompt: template.text });
+  const applyPromptTemplatePreset = (template: PromptTemplate) => {
+    if (generationType !== "video") {
+      setGenerationType("video");
+      onGenerationTypeChange?.("video");
+    }
+
+    if (template.videoModel) {
+      const matchedModel =
+        videoModels.find((model) => model.id === template.videoModel) ?? null;
+      if (matchedModel) {
+        setSelectedVideoModel(matchedModel);
+        onModelChange?.(matchedModel.id, "video");
+      }
+    }
+
+    if (template.aspectRatio) {
+      setVideoAspectRatio(template.aspectRatio);
+    }
+
+    if (template.duration) {
+      setDuration(template.duration);
+    }
+
+    if (template.resolution) {
+      setResolution(template.resolution);
+    }
+  };
+
+  const handlePromptSuggestion = async (
+    template: PromptTemplate,
+    promptMode: "simple" | "advanced" = "simple"
+  ) => {
+    const appliedPrompt =
+      (promptMode === "advanced" ? template.advancedPrompt : template.prompt) ??
+      template.prompt ??
+      template.advancedPrompt ??
+      template.text;
+
+    setPrompt(appliedPrompt);
+    setActiveTemplateId(template.id);
+    applyPromptTemplatePreset(template);
+    onPromptChange?.(appliedPrompt);
+    onChange?.({
+      type: "video",
+      prompt: appliedPrompt,
+      aspectRatio: template.aspectRatio,
+      duration: template.duration,
+      resolution: template.resolution,
+      model: template.videoModel,
+    });
     textareaRef.current?.focus();
 
     // If template has an image, load it into the appropriate upload slot
@@ -848,6 +917,25 @@ export function VideoGeneratorInput({
     }
   };
 
+  const getTemplateIcon = (category?: string) => {
+    switch (category) {
+      case "Product Showcase":
+        return ShoppingBag;
+      case "Social Ad":
+        return Megaphone;
+      case "Cinematic Story":
+        return Clapperboard;
+      case "Portrait Motion":
+        return UserRound;
+      case "Real Estate & Travel":
+        return House;
+      case "Anime & Stylized":
+        return Sparkles;
+      default:
+        return Sparkles;
+    }
+  };
+
   // ============================================================================
   // Render
   // ============================================================================
@@ -859,7 +947,11 @@ export function VideoGeneratorInput({
         <DialogContent className="bg-card border-border max-w-2xl p-2">
           <DialogTitle className="sr-only">Image Preview</DialogTitle>
           {previewImage && (
-            <img src={previewImage} alt="Preview" className="w-full h-auto rounded-lg" />
+            <img
+              src={previewImage}
+              alt="Uploaded reference image preview"
+              className="w-full h-auto rounded-lg"
+            />
           )}
         </DialogContent>
       </Dialog>
@@ -944,7 +1036,7 @@ export function VideoGeneratorInput({
                         <div className="relative w-full h-full rounded overflow-hidden">
                           <img
                             src={getImageForSlot("default")!.preview}
-                            alt="Uploaded"
+                            alt="Uploaded reference image"
                             className="w-full h-full object-cover"
                           />
                           {/* Zoom button - centered on hover */}
@@ -1415,32 +1507,170 @@ export function VideoGeneratorInput({
         </div>
       </div>
 
-      {/* Prompt Suggestions */}
-      {promptTemplates.length > 0 && (
-        <div className="mt-4 flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
-            Trending prompts:
+      {activeTemplate && hasFeaturedPromptCards && (
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
+          <Sparkles className="h-3.5 w-3.5 text-primary" />
+          <span>
+            Based on: <span className="font-semibold text-foreground">{activeTemplate.category ?? activeTemplate.text}</span>
           </span>
-          <button
-            onClick={refreshSuggestions}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-secondary/50 hover:bg-muted/50 transition-colors text-sm text-muted-foreground hover:text-foreground"
-          >
-            <RefreshCw className="w-3.5 h-3.5" />
-          </button>
-          {visibleTemplates.map((template) => (
-            <button
-              key={template.id}
-              onClick={() => handlePromptSuggestion(template)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/50 hover:bg-muted/50 transition-colors text-sm text-foreground/80 hover:text-foreground"
-            >
-              {template.image && (
-                <img src={template.image} alt="" className="w-5 h-5 rounded object-cover" />
-              )}
-              <span className="max-w-[120px] truncate">{template.text}</span>
-            </button>
-          ))}
         </div>
       )}
+
+      {/* Prompt Suggestions */}
+      {promptTemplates.length > 0 &&
+        (hasFeaturedPromptCards ? (
+          <div className="mt-5 space-y-3">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                  Featured by Genclip
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Trending this week. Tap a card to use the simple prompt, or remix the full preset.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {visibleTemplates.map((template) => {
+                const TemplateIcon = getTemplateIcon(template.category);
+                const appliedSimplePrompt = template.prompt ?? template.text;
+                const isExpanded = expandedTemplateId === template.id;
+
+                return (
+                  <div
+                    key={template.id}
+                    className={cn(
+                      "min-w-[280px] max-w-[280px] overflow-hidden rounded-2xl border bg-secondary/20 backdrop-blur-sm",
+                      activeTemplateId === template.id
+                        ? "border-primary shadow-[0_12px_30px_rgba(59,130,246,0.15)]"
+                        : "border-border/70"
+                    )}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handlePromptSuggestion(template, "simple")}
+                      className="block w-full cursor-pointer text-left"
+                    >
+                      <div className="relative aspect-video overflow-hidden bg-black">
+                        {template.previewVideo ? (
+                          <video
+                            src={template.previewVideo}
+                            poster={template.thumbnail}
+                            className="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            preload="metadata"
+                          />
+                        ) : template.thumbnail ? (
+                          <img
+                            src={template.thumbnail}
+                            alt={`${template.category ?? "Prompt"} preview`}
+                            className="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                          />
+                        ) : null}
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+                        <div className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-medium text-white">
+                          <TemplateIcon className="h-3 w-3" />
+                          <span>{template.category ?? "Prompt"}</span>
+                        </div>
+                        {template.modelLabel && (
+                          <div className="absolute right-3 top-3 rounded-full border border-white/20 bg-black/55 px-2.5 py-1 text-[10px] font-medium text-white">
+                            {template.modelLabel}
+                          </div>
+                        )}
+                        <div className="absolute inset-x-3 bottom-3">
+                          <p className="text-sm font-semibold text-white">{template.text}</p>
+                        </div>
+                      </div>
+                    </button>
+
+                    <div className="space-y-3 p-4">
+                      <p className="text-sm leading-6 text-foreground/90">
+                        {isExpanded && template.advancedPrompt ? template.advancedPrompt : appliedSimplePrompt}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2">
+                        {template.aspectRatio && (
+                          <span className="rounded-full bg-muted px-2.5 py-1 text-[11px] text-muted-foreground">
+                            {template.aspectRatio}
+                          </span>
+                        )}
+                        {template.duration && (
+                          <span className="rounded-full bg-muted px-2.5 py-1 text-[11px] text-muted-foreground">
+                            {template.duration}
+                          </span>
+                        )}
+                        {template.resolution && (
+                          <span className="rounded-full bg-muted px-2.5 py-1 text-[11px] text-muted-foreground">
+                            {template.resolution}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between gap-3">
+                        {template.advancedPrompt ? (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setExpandedTemplateId((current) =>
+                                current === template.id ? null : template.id
+                              )
+                            }
+                            className="text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                          >
+                            {isExpanded ? "Hide full prompt" : "Show full prompt"}
+                          </button>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">Simple prompt</span>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={() => handlePromptSuggestion(template, "advanced")}
+                          className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/15"
+                        >
+                          Remix
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="mt-4 flex items-center gap-2 flex-wrap">
+            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
+              Trending prompts:
+            </span>
+            <button
+              onClick={refreshSuggestions}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-secondary/50 hover:bg-muted/50 transition-colors text-sm text-muted-foreground hover:text-foreground"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+            </button>
+            {visibleTemplates.map((template) => (
+              <button
+                key={template.id}
+                onClick={() => handlePromptSuggestion(template)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/50 hover:bg-muted/50 transition-colors text-sm text-foreground/80 hover:text-foreground"
+              >
+                {template.image && (
+                  <img
+                    src={template.image}
+                    alt={`Prompt template: ${template.text}`}
+                    className="w-5 h-5 rounded object-cover"
+                  />
+                )}
+                <span className="max-w-[120px] truncate">{template.text}</span>
+              </button>
+            ))}
+          </div>
+        ))}
     </div>
   );
 }

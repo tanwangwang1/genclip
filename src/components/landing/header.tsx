@@ -54,6 +54,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
   const signInModal = useSigninModal();
   const t = useTranslations();
   const locale = useLocale();
+  const logoAlt = locale === "zh" ? "Genclip AI 视频生成器标志" : "Genclip AI video generator logo";
   const pathname = usePathname();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -118,7 +119,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
             href="/"
             className="flex items-center gap-2 text-xl font-semibold"
           >
-            <Image src="/logo.png" alt="Genclip" width={28} height={28} className="rounded-md" />
+            <Image src="/logo.png" alt={logoAlt} width={28} height={28} className="rounded-md" />
             Genclip
           </LocaleLink>
 
@@ -302,7 +303,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
             href="/"
             className="flex items-center gap-2 text-lg font-semibold"
           >
-            <Image src="/logo.png" alt="Genclip" width={28} height={28} className="rounded-md" />
+            <Image src="/logo.png" alt={logoAlt} width={28} height={28} className="rounded-md" />
             Genclip
           </LocaleLink>
 
@@ -332,7 +333,7 @@ export function LandingHeader({ user }: { user?: User | null }) {
                       href="/"
                       className="flex items-center gap-2"
                     >
-                      <Image src="/logo.png" alt="Genclip" width={28} height={28} className="rounded-md" />
+                      <Image src="/logo.png" alt={logoAlt} width={28} height={28} className="rounded-md" />
             Genclip
                     </LocaleLink>
                   </SheetTitle>
