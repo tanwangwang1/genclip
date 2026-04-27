@@ -78,6 +78,11 @@ export default async function TermsOfServicePage({
           </li>
           <li>
             {isZh
+              ? "严禁使用本平台生成、请求、上传、传播或推广 NSFW、色情、裸露、成人、性暗示或其他性相关内容（包括文本、图像、视频及其变体）。"
+              : "You must not generate, request, upload, distribute, or promote NSFW, pornographic, nude, adult, sexually explicit, or sexually suggestive content (including text, images, videos, and derivatives)."}
+          </li>
+          <li>
+            {isZh
               ? "不得绕过限制、抓取受限数据或干扰服务稳定性。"
               : "No attempts to bypass limits, scrape restricted data, or disrupt service."}
           </li>

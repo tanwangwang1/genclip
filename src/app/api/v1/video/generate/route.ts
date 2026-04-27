@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { videoService } from "@/services/video";
 import { requireAuth } from "@/lib/api/auth";
 import { apiSuccess, handleApiError } from "@/lib/api/response";
+import { moderatePromptOrThrow } from "@/lib/creem/moderation";
 import { z } from "zod";
 // Import proxy configuration for fetch requests
 import "@/lib/proxy-config";
@@ -29,6 +30,9 @@ export async function POST(request: NextRequest) {
     const user = await requireAuth(request);
     const body = await request.json();
     const data = generateSchema.parse(body);
+    const externalId = `user_${user.id}:video_model_${data.model}:${Date.now()}`;
+
+    await moderatePromptOrThrow(data.prompt, externalId);
 
     const result = await videoService.generate({
       userId: user.id,
