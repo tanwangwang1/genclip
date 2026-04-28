@@ -41,6 +41,20 @@ import type {
 // ============================================================================
 
 export const DEFAULT_VIDEO_MODELS: VideoModel[] = [
+  {
+    id: "happyhorse-1.0",
+    name: "HappyHorse 1.0",
+    icon: "https://videocdn.pollo.ai/model-icon/svg/Group.svg",
+    color: "#6366f1",
+    description: "Text-to-video flagship model",
+    maxDuration: "15 sec",
+    creditCost: 33,
+    durations: ["3s", "4s", "5s", "6s", "8s", "10s", "12s", "15s"],
+    aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4"],
+    resolutions: ["720P", "1080P"],
+    maxImages: 9,
+    supportsAudio: false,
+  },
   // ============================================================================
   // Seedance Series (Primary - APImart)
   // ============================================================================
@@ -185,6 +199,7 @@ export const DEFAULT_VIDEO_MODES: GeneratorMode[] = [
     // Supports T2V and I2V (upload image for I2V mode)
     // Sora, Wan, Veo, Seedance
     supportedModels: [
+      "happyhorse-1.0",
       "seedance-2.0-pro",
       "seedance-1.5-pro",
       "seedance-1.0-pro-fast",
@@ -412,7 +427,7 @@ export const DEFAULT_CONFIG: GeneratorConfig = {
 export const DEFAULT_DEFAULTS: GeneratorDefaults = {
   generationType: "video",
   prompt: "",
-  videoModel: "seedance-2.0-pro",
+  videoModel: "happyhorse-1.0",
   imageModel: "flux-pro",
   videoMode: "text-image-to-video",
   imageMode: "text-to-image",

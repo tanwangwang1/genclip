@@ -254,6 +254,14 @@ export const CREDIT_PACKAGES: CreditPackageConfig[] = [
  * - qualityMultiplier: 画质乘数（1080p vs 720p）
  */
 export const VIDEO_MODEL_PRICING: Record<string, VideoModelPricing> = {
+  /** HappyHorse 1.0（Evolink：happyhorse-1.0-text-to-video） */
+  "happyhorse-1.0": {
+    baseCredits: 33,
+    perSecond: 10.87,
+    qualityMultiplier: 1.6,
+    enabled: true,
+  },
+
   /** Seedance 1.5 Pro（Evolink：seedance-1.5-pro）— 按秒计费 */
   "seedance-1.5-pro": {
     baseCredits: 7,

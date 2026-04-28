@@ -154,6 +154,18 @@ export const CREDITS_CONFIG = {
       .map(([modelId, pricing]) => {
         // 模型基础配置（从 defaults.ts 获取）
         const baseConfigs: Record<string, Omit<ModelConfig, "creditCost">> = {
+          "happyhorse-1.0": {
+            id: "happyhorse-1.0",
+            name: "HappyHorse 1.0",
+            provider: "evolink" as const,
+            description:
+              "HappyHorse 1.0. Supports text, single-image, and reference-to-video (1-9 images).",
+            supportImageToVideo: true,
+            maxDuration: 15,
+            durations: [3, 4, 5, 6, 8, 10, 12, 15],
+            aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4"],
+            qualities: ["720P", "1080P"],
+          },
           "sora-2": {
             id: "sora-2",
             name: "Sora 2",
@@ -431,6 +443,13 @@ export function calculateModelCredits(
         perSecond = resolution <= 480 ? 4 : 8;
       }
       credits = params.duration * perSecond;
+      break;
+    }
+
+    case "happyhorse-1.0": {
+      const duration = clampDuration(params.duration ?? 5, 3, 15);
+      const perSecond = resolution >= 1080 ? 19.3 : 163 / 15;
+      credits = duration * perSecond;
       break;
     }
 

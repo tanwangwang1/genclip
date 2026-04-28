@@ -115,7 +115,7 @@ export function VideoGeneratorInput({
   disabled = false,
   isLoading = false,
   loadingText,
-  maxPromptLength = 2000,
+  maxPromptLength = 5000,
 
   // Styling
   className,

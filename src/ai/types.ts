@@ -6,6 +6,8 @@ export type ProviderType = "evolink" | "kie" | "apimart";
 export interface VideoGenerationParams {
   model?: string;
   prompt: string;
+  /** Evolink HappyHorse 1.0: optional deterministic seed (1..2147483647) */
+  seed?: number;
   aspectRatio?: string;
   duration?: number;
   quality?: string;

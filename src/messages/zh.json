@@ -28,10 +28,10 @@
     "startForFree": "免费开始"
   },
   "Hero": {
-    "badge": "核心引擎：Seedance 2.0 与 Seedance 1.5 Pro",
+    "badge": "核心引擎：HappyHorse 1.0 与 Seedance 2.0 Pro",
     "title": "把任何想法变成电影感视频，只需几分钟。",
     "subtitle": "专为电影感文生视频与图生视频创作打造",
-    "description": "输入文本或图片，即可生成电影级短片。由 Seedance 2.0 Pro 驱动。",
+    "description": "输入文本或图片，即可生成电影级短片。由 HappyHorse 1.0 驱动。",
     "startCreating": "免费开始创作",
     "viewExamples": "查看示例",
     "demoAriaLabel": "打开 {tag} AI 视频示例",

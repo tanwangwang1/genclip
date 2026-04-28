@@ -8,7 +8,8 @@ import { z } from "zod";
 import "@/lib/proxy-config";
 
 const generateSchema = z.object({
-  prompt: z.string().min(1).max(5000),
+  prompt: z.string().max(5000).optional(),
+  seed: z.number().int().min(1).max(2147483647).optional(),
   model: z.string().min(1),
   duration: z.number().optional(),
   aspectRatio: z.string().optional(),
@@ -30,13 +31,34 @@ export async function POST(request: NextRequest) {
     const user = await requireAuth(request);
     const body = await request.json();
     const data = generateSchema.parse(body);
+    const hasImageInput =
+      Boolean(data.imageUrl) ||
+      (Array.isArray(data.imageUrls) && data.imageUrls.length > 0) ||
+      (Array.isArray(data.videoUrls) && data.videoUrls.length > 0);
+    const promptText = (data.prompt ?? "").trim();
+    const isHappyHorseModel = data.model === "happyhorse-1.0";
+    const isReferenceMode = data.mode === "reference-to-video";
+    const canSkipPrompt = isHappyHorseModel && hasImageInput && !isReferenceMode;
+
+    if (!promptText && !canSkipPrompt) {
+      throw new z.ZodError([
+        {
+          code: "custom",
+          path: ["prompt"],
+          message: "Prompt is required for this model/mode",
+        },
+      ]);
+    }
     const externalId = `user_${user.id}:video_model_${data.model}:${Date.now()}`;
 
-    await moderatePromptOrThrow(data.prompt, externalId);
+    if (promptText) {
+      await moderatePromptOrThrow(promptText, externalId);
+    }
 
     const result = await videoService.generate({
       userId: user.id,
-      prompt: data.prompt,
+      prompt: promptText,
+      seed: data.seed,
       model: data.model,
       duration: data.duration,
       aspectRatio: data.aspectRatio,

@@ -189,11 +189,11 @@ export function HeroSection({ currentProvider }: HeroSectionProps) {
   }, [currentProvider]);
 
   const generatorDefaults = useMemo(() => {
-    const hasSeedance20 = (generatorConfig.videoModels ?? []).some(
-      (model) => model.id === "seedance-2.0-pro"
+    const hasHappyHorse = (generatorConfig.videoModels ?? []).some(
+      (model) => model.id === "happyhorse-1.0"
     );
-    const preferredModel = hasSeedance20
-      ? "seedance-2.0-pro"
+    const preferredModel = hasHappyHorse
+      ? "happyhorse-1.0"
       : (generatorConfig.videoModels ?? [])[0]?.id ?? DEFAULT_DEFAULTS.videoModel;
     return {
       ...DEFAULT_DEFAULTS,

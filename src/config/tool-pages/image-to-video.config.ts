@@ -27,7 +27,7 @@ export const imageToVideoConfig: ToolPageConfig = {
     uiMode: "compact",
 
     defaults: {
-      model: "seedance-2.0-pro",
+      model: "happyhorse-1.0",
       duration: 5,
       aspectRatio: "16:9",
       outputNumber: 1,
@@ -35,10 +35,11 @@ export const imageToVideoConfig: ToolPageConfig = {
 
     models: {
       available: [
+        "happyhorse-1.0",
         "seedance-2.0-pro",
         "seedance-1.5-pro",
       ],
-      default: "seedance-2.0-pro",
+      default: "happyhorse-1.0",
     },
 
     features: {
@@ -51,13 +52,13 @@ export const imageToVideoConfig: ToolPageConfig = {
 
     settings: {
       showDuration: true,
-      showAspectRatio: true,
-      showQuality: false,
+      showAspectRatio: false,
+      showQuality: true,
       showOutputNumber: false,
       showAudioGeneration: false,
 
-      durations: [2, 4, 5, 6, 8, 10, 12, 13, 14, 15],
-      aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9", "adaptive"],
+      durations: [3, 4, 5, 6, 8, 10, 12, 15],
+      qualities: ["720P", "1080P"],
     },
   },
 
@@ -90,13 +91,15 @@ export const imageToVideoConfig: ToolPageConfig = {
 
     features: [
       "Upload any photo (JPG, PNG, WEBP up to 10MB)",
-      "Multiple AI models for different animation styles",
-      "Seedance 2.0: 480p/720p; Seedance 1.0: up to 1080p",
+      "HappyHorse 1.0 image-to-video with single first-frame control",
+      "Prompt is optional for free interpretation from the image",
+      "720p and 1080p quality output",
       "Fast generation in 2-5 minutes",
       "Commercial use rights included",
     ],
 
     supportedModels: [
+      { name: "HappyHorse 1.0", provider: "Evolink", color: "#6366f1" },
       { name: "Seedance 2.0 Pro", provider: "ByteDance", color: "#10b981" },
       { name: "Seedance 1.5 Pro", provider: "ByteDance", color: "#db2777" },
     ],

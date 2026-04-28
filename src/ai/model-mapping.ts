@@ -16,6 +16,7 @@ import type { ProviderType } from "./types";
 
 const SEEDANCE_EVOLINK_V2_ID = "seedance-2.0-pro";
 const SEEDANCE_15_PRO_ID = "seedance-1.5-pro";
+const HAPPYHORSE_10_ID = "happyhorse-1.0";
 
 function resolveModelMappingId(internalModelId: string): string {
   return internalModelId;
@@ -386,6 +387,66 @@ function wanAspectForApi(aspectRatio?: string): string {
   return ar;
 }
 
+const HAPPYHORSE_ASPECT_CANON: Record<string, "16:9" | "9:16" | "1:1" | "4:3" | "3:4"> = {
+  "16:9": "16:9",
+  "9:16": "9:16",
+  "1:1": "1:1",
+  "4:3": "4:3",
+  "3:4": "3:4",
+};
+
+function happyHorseAspectForApi(aspectRatio?: string): "16:9" | "9:16" | "1:1" | "4:3" | "3:4" {
+  const key = String(aspectRatio || "16:9").trim().toLowerCase();
+  return HAPPYHORSE_ASPECT_CANON[key] ?? "16:9";
+}
+
+function happyHorseQualityForApi(quality?: string): "720p" | "1080p" {
+  const q = normalizeQuality(quality, "evolink", HAPPYHORSE_10_ID);
+  return q === "1080p" ? "1080p" : "720p";
+}
+
+function buildHappyHorse10EvolinkBody(params: Record<string, any>): Record<string, any> {
+  const imageUrls = Array.isArray(params.imageUrls)
+    ? params.imageUrls.filter(Boolean)
+    : params.imageUrl
+      ? [params.imageUrl]
+      : [];
+  const mode = params.mode as string | undefined;
+  const isReferenceMode = mode === "reference-to-video";
+  const hasImageInput = imageUrls.length > 0 || params.mode === "image-to-video";
+  const rawDuration =
+    typeof params.duration === "number" && Number.isFinite(params.duration)
+      ? params.duration
+      : 5;
+  const duration = Math.min(15, Math.max(3, Math.round(rawDuration)));
+  const body: Record<string, any> = {
+    quality: happyHorseQualityForApi(params.quality),
+    duration,
+    callback_url: params.callbackUrl,
+  };
+
+  const normalizedPrompt = String(params.prompt || "").trim().slice(0, 5000);
+  if (normalizedPrompt.length > 0) {
+    body.prompt = normalizedPrompt;
+  }
+
+  if (isReferenceMode) {
+    body.image_urls = imageUrls.slice(0, 9);
+    body.aspect_ratio = happyHorseAspectForApi(params.aspectRatio);
+  } else if (hasImageInput) {
+    body.image_urls = imageUrls.slice(0, 1);
+    // HappyHorse i2v: aspect ratio is auto-derived from first frame, do NOT send aspect_ratio
+  } else {
+    body.aspect_ratio = happyHorseAspectForApi(params.aspectRatio);
+  }
+
+  if (typeof params.seed === "number" && Number.isInteger(params.seed)) {
+    body.seed = Math.min(2147483647, Math.max(1, params.seed));
+  }
+
+  return body;
+}
+
 /**
  * Evolink Wan 2.6：按子模型组装请求体（文生 / 首帧图生 / 参考视频），对齐官方 OpenAPI。
  */
@@ -492,6 +553,9 @@ function evolinkParamsTransformer(
   }
   if (internalModelId === "wan2.6") {
     return buildWan26EvolinkBody(params);
+  }
+  if (internalModelId === HAPPYHORSE_10_ID) {
+    return buildHappyHorse10EvolinkBody(params);
   }
 
   const quality = normalizeQuality(params.quality, "evolink", internalModelId);
@@ -881,6 +945,33 @@ export const MODEL_MAPPINGS: Record<string, ModelMapping> = {
       },
     },
   },
+  // -------------------------------------------------------------------------
+  // HappyHorse 1.0 (Evolink text-to-video)
+  // -------------------------------------------------------------------------
+  "happyhorse-1.0": {
+    internalId: "happyhorse-1.0",
+    displayName: "HappyHorse 1.0",
+    providers: {
+      evolink: {
+        providerModelId: (params: Record<string, any>) => {
+          const imageUrls = Array.isArray(params.imageUrls)
+            ? params.imageUrls
+            : params.imageUrl
+              ? [params.imageUrl]
+              : [];
+          if (params.mode === "reference-to-video" || imageUrls.length > 1) {
+            return "happyhorse-1.0-reference-to-video";
+          }
+          const hasImageInput = imageUrls.length > 0 || params.mode === "image-to-video";
+          return hasImageInput
+            ? "happyhorse-1.0-image-to-video"
+            : "happyhorse-1.0-text-to-video";
+        },
+        supported: true,
+        transformParams: evolinkParamsTransformer,
+      },
+    },
+  },
 };
 
 const MODEL_MODE_SUPPORT: Record<
@@ -929,6 +1020,9 @@ const MODEL_MODE_SUPPORT: Record<
   },
   "seedance-1.0-pro-quality": {
     apimart: ["text-to-video", "image-to-video"],
+  },
+  "happyhorse-1.0": {
+    evolink: ["text-to-video", "image-to-video", "reference-to-video"],
   },
 };
 

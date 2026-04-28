@@ -26,15 +26,15 @@ export const referenceToVideoConfig: ToolPageConfig = {
     uiMode: "compact",
 
     defaults: {
-      model: "seedance-2.0-pro",
+      model: "happyhorse-1.0",
       duration: 5,
       aspectRatio: "16:9",
       outputNumber: 1,
     },
 
     models: {
-      available: ["seedance-2.0-pro"],
-      default: "seedance-2.0-pro",
+      available: ["happyhorse-1.0", "seedance-2.0-pro"],
+      default: "happyhorse-1.0",
     },
 
     features: {
@@ -92,6 +92,7 @@ export const referenceToVideoConfig: ToolPageConfig = {
     ],
 
     supportedModels: [
+      { name: "HappyHorse 1.0", provider: "Evolink", color: "#6366f1" },
       { name: "Seedance 2.0 Pro", provider: "ByteDance", color: "#10b981" },
     ],
 

@@ -176,6 +176,18 @@ function calculateSeedance20Credits(params: CreditCalculationParams): number {
   return credits * params.outputNumber;
 }
 
+/**
+ * HappyHorse 1.0（Evolink 文生视频）
+ * - 720p: 3s=33, 4s=44, ... 15s=163
+ * - 1080p: 3s=58, 4s=77, ... 15s=290
+ */
+function calculateHappyHorseCredits(params: CreditCalculationParams): number {
+  const duration = Math.min(15, Math.max(3, parseDuration(params.duration) || 5));
+  const resolution = parseResolution(params.resolution);
+  const perSecond = resolution >= 1080 ? 19.3 : 163 / 15;
+  return Math.ceil(duration * perSecond) * params.outputNumber;
+}
+
 // ============================================================================
 // Main Calculator
 // ============================================================================
@@ -199,6 +211,9 @@ export function calculateVideoCredits(params: CreditCalculationParams): number {
 
   // 根据模型 ID 使用不同的计算逻辑
   switch (model.id) {
+    case "happyhorse-1.0":
+      return calculateHappyHorseCredits(params);
+
     case "sora-2":
       return calculateSora2Credits(params);
 
@@ -311,6 +326,13 @@ export function getCreditRangeText(model: VideoModel): string {
     maxCredits = calculateVideoCredits({
       model,
       duration: "12s",
+      resolution: "1080P",
+      outputNumber: 1,
+    });
+  } else if (model.id === "happyhorse-1.0") {
+    maxCredits = calculateVideoCredits({
+      model,
+      duration: "15s",
       resolution: "1080P",
       outputNumber: 1,
     });

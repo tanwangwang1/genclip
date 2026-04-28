@@ -22,6 +22,7 @@ interface CreationFilterProps {
 /** value 与数据库 `videos.model` 一致（内部模型 ID） */
 const availableModels = [
   { value: "all", label: "All Models" },
+  { value: "happyhorse-1.0", label: "HappyHorse 1.0" },
   { value: "sora-2", label: "Sora 2" },
   { value: "veo-3.1", label: "Veo 3.1" },
   { value: "seedance-2.0-pro", label: "Seedance 2.0 Pro" },

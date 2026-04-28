@@ -38,6 +38,7 @@ function convertToVideoModel(modelConfig: any): VideoModel {
  */
 function getModelColor(modelId: string): string {
   const colorMap: Record<string, string> = {
+    "happyhorse-1.0": "#6366f1",
     "sora-2": "#000000",
     "veo-3.1": "#4285f4",
     "wan2.6": "#8b5cf6",

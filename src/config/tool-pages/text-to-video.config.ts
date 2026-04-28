@@ -8,14 +8,14 @@ export const textToVideoConfig: ToolPageConfig = {
   // SEO 配置
   seo: {
     title: "Text to Video - Create Videos from Text with AI",
-    description: "Transform your text descriptions into stunning videos using AI. Simply describe what you want, and watch Seedance AI models bring your vision to life.",
+    description: "Transform your text descriptions into stunning videos using AI. Powered by HappyHorse 1.0 with cinematic quality and fast generation.",
     keywords: [
       "text to video",
       "ai video generator",
       "video from text",
       "ai video creation",
-      "seedance",
-      "seedance 2.0",
+      "happyhorse 1.0",
+      "happyhorse text to video",
       "text to video ai",
     ],
     ogImage: "/og-text-to-video.jpg",
@@ -27,7 +27,7 @@ export const textToVideoConfig: ToolPageConfig = {
     uiMode: "compact",
 
     defaults: {
-      model: "seedance-2.0-pro",
+      model: "happyhorse-1.0",
       duration: 5,
       aspectRatio: "16:9",
       outputNumber: 1,
@@ -35,10 +35,11 @@ export const textToVideoConfig: ToolPageConfig = {
 
     models: {
       available: [
+        "happyhorse-1.0",
         "seedance-2.0-pro",
         "seedance-1.5-pro",
       ],
-      default: "seedance-2.0-pro",
+      default: "happyhorse-1.0",
     },
 
     features: {
@@ -52,12 +53,13 @@ export const textToVideoConfig: ToolPageConfig = {
     settings: {
       showDuration: true,
       showAspectRatio: true,
-      showQuality: false,
+      showQuality: true,
       showOutputNumber: false,
-      showAudioGeneration: true,
+      showAudioGeneration: false,
 
-      durations: [2, 4, 5, 6, 8, 10, 12, 13, 14, 15],
-      aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9", "adaptive"],
+      durations: [3, 4, 5, 6, 8, 10, 12, 15],
+      aspectRatios: ["16:9", "9:16", "1:1", "4:3", "3:4"],
+      qualities: ["720P", "1080P"],
     },
   },
 
@@ -90,13 +92,14 @@ export const textToVideoConfig: ToolPageConfig = {
 
     features: [
       "Simply describe what you want to see",
-      "Access to Seedance AI models (2.0 Pro, 1.0 Fast, 1.0 Quality)",
-      "Seedance 2.0: up to 720p; Seedance 1.0: up to 1080p",
+      "Powered by HappyHorse 1.0 for text-to-video",
+      "720p and 1080p quality options",
       "Generate audio and sound effects automatically",
       "Multiple aspect ratios for any platform",
     ],
 
     supportedModels: [
+      { name: "HappyHorse 1.0", provider: "Evolink", color: "#6366f1" },
       { name: "Seedance 2.0 Pro", provider: "ByteDance", color: "#10b981" },
       { name: "Seedance 1.5 Pro", provider: "ByteDance", color: "#db2777" },
     ],

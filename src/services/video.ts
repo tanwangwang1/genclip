@@ -18,6 +18,7 @@ import { getConfiguredAIProvider } from "@/ai/provider-config";
 export interface GenerateVideoParams {
   userId: string;
   prompt: string;
+  seed?: number;
   model: string; // "sora-2"
   duration?: number;
   aspectRatio?: string; // "16:9" | "9:16"
@@ -167,6 +168,7 @@ export class VideoService {
         prompt: params.prompt,
         model: params.model,
         parameters: {
+          seed: params.seed,
           duration: params.duration,
           aspectRatio: params.aspectRatio,
           quality: params.quality,
@@ -250,6 +252,7 @@ export class VideoService {
       const result = await provider.createTask({
         model: params.model,
         prompt: params.prompt,
+        seed: params.seed,
         duration: effectiveDuration,  // ✅ 使用计算后的时长
         aspectRatio: params.aspectRatio,
         quality: params.quality,
