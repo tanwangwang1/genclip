@@ -70,6 +70,13 @@ export default async function TermsOfServicePage({
         </p>
 
         <h2>{isZh ? "3. 合法与可接受使用" : "3. Acceptable Use"}</h2>
+        <p>
+          <strong>
+            {isZh
+              ? "NSFW 内容禁止：严禁使用 Genclip 生成任何 NSFW、露骨（sexually explicit）或性暗示（sexually suggestive）内容。"
+              : "NSFW content prohibition: You are strictly prohibited from using Genclip to generate any NSFW, sexually explicit, or sexually suggestive content."}
+          </strong>
+        </p>
         <ul>
           <li>
             {isZh
@@ -78,8 +85,8 @@ export default async function TermsOfServicePage({
           </li>
           <li>
             {isZh
-              ? "严禁使用本平台生成、请求、上传、传播或推广 NSFW、色情、裸露、成人、性暗示或其他性相关内容（包括文本、图像、视频及其变体）。"
-              : "You must not generate, request, upload, distribute, or promote NSFW, pornographic, nude, adult, sexually explicit, or sexually suggestive content (including text, images, videos, and derivatives)."}
+              ? "你不得请求、生成、上传、传播或推广 NSFW、色情、裸露、成人、sexually explicit、sexually suggestive 或其他性相关内容（包括文本、图像、视频及其变体）。"
+              : "You must not request, generate, upload, distribute, or promote NSFW, pornographic, nude, adult, sexually explicit, sexually suggestive, or other sexual content (including text, images, videos, and derivatives)."}
           </li>
           <li>
             {isZh
